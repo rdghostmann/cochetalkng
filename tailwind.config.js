@@ -5,27 +5,49 @@ module.exports = {
   presets: [require("nativewind/preset")],
   theme: {
   extend: {
-    colors: {
-      primary: "#00EBBA",
-      secondary: "#00BFA5",
-      accent: "#50FFDC",
+    // colors: {
+    //   primary: "#00EBBA",
+    //   secondary: "#00BFA5",
+    //   accent: "#50FFDC",
 
-      background: "#F7FAFA",
-      foreground: "#1C1B1F",
+    //   background: "#F7FAFA",
+    //   foreground: "#1C1B1F",
 
-      surface: "#FFFFFF",
-      card: "#FFFFFF",
+    //   surface: "#FFFFFF",
+    //   card: "#FFFFFF",
 
-      muted: "#EEF4F3",
+    //   muted: "#EEF4F3",
 
-      border: "#DCE8E5",
+    //   border: "#DCE8E5",
 
-      success: "#10B981",
-      warning: "#F59E0B",
-      destructive: "#EF4444",
+    //   success: "#10B981",
+    //   warning: "#F59E0B",
+    //   destructive: "#EF4444",
 
-      verified: "#00EBBA",
-      pro: "#A78BFA",
+    //   verified: "#00EBBA",
+    //   pro: "#A78BFA",
+    // },
+     colors: {
+      primary: "var(--color-primary)",
+      "primary-foreground": "var(--color-primary-foreground)",
+
+      background: "var(--color-background)",
+      foreground: "var(--color-foreground)",
+
+      card: "var(--color-card)",
+      "card-foreground": "var(--color-card-foreground)",
+
+      border: "var(--color-border)",
+
+      muted: "var(--color-muted)",
+      "muted-foreground": "var(--color-muted-foreground)",
+
+      success: "var(--color-success)",
+      warning: "var(--color-warning)",
+      destructive: "var(--color-destructive)",
+
+      verified: "var(--color-verified)",
+      "pro-circle": "var(--color-pro-circle)",
     },
 
     borderRadius: {

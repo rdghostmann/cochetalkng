@@ -1,4 +1,4 @@
-import React from "react";
+// .src/app/(tabs)/_layout.tsx
 import { Feather } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
 
