@@ -1,0 +1,118 @@
+// app/pro.tsx
+
+import { useMemo, useState } from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
+
+
+import { FilterChips } from "@/components/pro/FilterChips";
+import { FloatingAskButton } from "@/components/pro/FloatingAskButton";
+import { ProHeader } from "@/components/pro/ProHeader";
+import { RestrictedProView } from "@/components/pro/RestrictedProView";
+import { ProQuestionList } from "@/components/pro/ProQuestionList";
+import { EmptyProQuestions } from "@/components/pro/EmptyProQuestion";
+import { AskQuestionModal } from "@/components/pro/AskQuestionModal";
+
+const FILTERS = [
+  "Latest",
+  "Most Answered",
+  "Unanswered",
+] as const;
+
+export default function ProScreen() {
+  
+
+  const [activeFilter, setActiveFilter] =
+    useState<(typeof FILTERS)[number]>("Latest");
+
+  const [showAskModal, setShowAskModal] =
+    useState(false);
+
+  const restricted =  !currentUser ||  currentUser.role === "Car Owner";
+
+  const proQuestions = useMemo(() => {
+    const list = questions.filter(
+      (q) => q.isPrivateEcosystem
+    );
+
+    switch (activeFilter) {
+      case "Most Answered":
+        return [...list].sort(
+          (a, b) =>
+            answers.filter(
+              (ans) => ans.questionId === b.id
+            ).length -
+            answers.filter(
+              (ans) => ans.questionId === a.id
+            ).length
+        );
+
+      case "Unanswered":
+        return list.filter(
+          (q) =>
+            !answers.some(
+              (a) => a.questionId === q.id
+            )
+        );
+
+      default:
+        return [...list].sort(
+          (a, b) =>
+            b.timestamp - a.timestamp
+        );
+    }
+  }, [
+    questions,
+    answers,
+    activeFilter,
+  ]);
+
+  if (restricted) {
+    return (
+      <SafeAreaView
+        edges={["top"]}
+        className="flex-1 bg-background"
+      >
+        <ProHeader />
+
+        <RestrictedProView />
+      </SafeAreaView>
+    );
+  }
+
+  return (
+    <SafeAreaView
+      edges={["top"]}
+      className="flex-1 bg-background"
+    >
+      <ProHeader />
+
+      <FilterChips
+        filters={FILTERS}
+        active={activeFilter}
+        onChange={setActiveFilter}
+      />
+
+      <ProQuestionList
+        questions={proQuestions}
+        answers={answers}
+        ListEmptyComponent={
+          <EmptyProQuestions />
+        }
+      />
+
+      <FloatingAskButton
+        onPress={() =>
+          setShowAskModal(true)
+        }
+      />
+
+      <AskQuestionModal
+        visible={showAskModal}
+        onClose={() =>
+          setShowAskModal(false)
+        }
+        askQuestion={askQuestion}
+      />
+    </SafeAreaView>
+  );
+}
