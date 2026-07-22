@@ -9,11 +9,24 @@ export const AuthService = {
     });
   },
 
-  signUp(email: string, password: string) {
+  signUp(email: string, password: string,  fullName: string) {
     return supabase.auth.signUp({
       email,
       password,
+       options: {
+        data: {
+          full_name: fullName,
+        },
+      },
     });
+  },
+
+    async createProfile(data: {
+    id: string;
+    email: string;
+    full_name: string;
+  }) {
+    return supabase.from("profiles").insert(data);
   },
 
   signOut() {

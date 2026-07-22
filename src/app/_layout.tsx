@@ -1,23 +1,23 @@
+// src/app/_layout.tsx
 import "../global.css";
 
 import { Stack } from "expo-router";
 
-
-import { DarkTheme, DefaultTheme, ThemeProvider } from 'expo-router';
-import { useColorScheme } from 'react-native';
-
 import { QueryProvider } from "@/providers/QueryProvider";
 import { AuthProvider } from "@/providers/AuthProvider";
+import { ThemeProvider } from "@/providers/ThemeProvider";
+import { NotificationProvider } from "@/providers/NotificationProvider";
 
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
+export default function RootLayout() {
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <QueryProvider>
-        <AuthProvider>
-          <Stack screenOptions={{ headerShown: false }} />
-        </AuthProvider>
-      </QueryProvider>
-    </ThemeProvider>
+    <QueryProvider>
+      <AuthProvider>
+        <ThemeProvider>
+          <NotificationProvider>
+            <Stack screenOptions={{ headerShown: false }} />
+          </NotificationProvider>
+        </ThemeProvider>
+      </AuthProvider>
+    </QueryProvider>
   );
 }
