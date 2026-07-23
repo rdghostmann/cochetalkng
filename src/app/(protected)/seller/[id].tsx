@@ -8,14 +8,16 @@ import {
   router,
   useLocalSearchParams,
 } from "expo-router";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import {
   Linking,
   ScrollView,
   Text,
+  View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { SellerActions, SellerAvatar, SellerHeader, SellerInfo, SellerListingSection, SellerQuestionSection, SellerReviewSection, SellerStats } from "./components";
+import { USER_ROLE } from "@/types/forum.types";
 
 
 export default function SellerProfileScreen() {
@@ -47,13 +49,26 @@ export default function SellerProfileScreen() {
     [sellerQuestions]
   );
 
-  const canRate =
-    !!currentUser &&
-    currentUser.id !== sellerId &&
-    seller?.role === "Service Provider";
+  const canRate = useMemo(() => {
+    if (!currentUser || !seller) return false;
+
+    return (
+      currentUser.id !== seller.id &&
+      seller?.role === USER_ROLE.PROVIDER
+    );
+  }, [currentUser, seller]);
+
   const canMessage = !!currentUser && currentUser.id !== sellerId;
 
-  const handleSubmitRating = () => {
+
+  const closeRatingModal = () => {
+    setShowRatingModal(false);
+
+    setRating(5);
+
+    setFeedback("");
+  };
+  const handleSubmitRating = useCallback(() => {
     if (!seller || !currentUser || !feedback.trim()) return;
 
     addRating({
@@ -69,19 +84,21 @@ export default function SellerProfileScreen() {
     setShowRatingModal(false);
     setRating(5);
     setFeedback("");
-  };
+  }, [seller, currentUser, feedback, rating, addRating]);
 
 
-  const handleMessage = () => {
-    if (!currentUser || !seller) return;
+  const handleMessage = useCallback(() => {
+    if (!seller || !currentUser) return;
 
     const conversationId = makeConversationId(
       currentUser.id,
       seller.id
     );
 
-    // router.push( `/(protected)/conversation/${conversationId}`);   );
-  };
+    console.log(`Navigating to conversation with ID: ${conversationId}`);
+
+    // router.push(`/(protected)/conversation/${conversationId}`);
+  }, [seller, currentUser]);
 
   const handleWhatsapp = () => {
     if (!seller?.phone) return;
@@ -108,10 +125,17 @@ export default function SellerProfileScreen() {
   if (!seller) {
     return (
       <SafeAreaView className="flex-1 items-center justify-center bg-background">
+        <View className="flex-1 items-center justify-center px-6">
 
-        <Text className="text-base text-muted-foreground">
-          Seller not found
-        </Text>
+          <Text className="text-lg font-semibold">
+            Seller not found
+          </Text>
+
+          <Text className="mt-2 text-center text-muted-foreground">
+            The seller you're looking for may have been removed.
+          </Text>
+
+        </View>
 
       </SafeAreaView>
     );
@@ -124,7 +148,7 @@ export default function SellerProfileScreen() {
 
       <ScrollView
         className="flex-1"
-        contentContainerClassName="px-4 pb-10"
+        contentContainerClassName="px-4 pb-24"
         showsVerticalScrollIndicator={false}
       >
 
@@ -179,9 +203,7 @@ export default function SellerProfileScreen() {
         onRatingChange={setRating}
         onFeedbackChange={setFeedback}
         onSubmit={handleSubmitRating}
-        onClose={() =>
-          setShowRatingModal(false)
-        }
+        onClose={closeRatingModal}
       />
 
     </SafeAreaView>

@@ -14,6 +14,12 @@ export type UserRole =
   | "Car Dealer"
   | "Admin";
 
+
+export const USER_ROLE = {
+  BUYER: "Buyer",
+  SELLER: "Seller",
+  PROVIDER: "Service Provider",
+} as const;
 /**
  * ---------------------------------------
  * Forum User
