@@ -1,18 +1,19 @@
+// components/forum/FilterChips.tsx
 import { Pressable, ScrollView, Text } from "react-native";
 
+import { FORUM_FILTERS } from "@/constants/forum";
+import type { ForumFilter } from "@/types/forum.types";
+
 interface Props {
-  value: string;
-  onChange(value: string): void;
+  active: ForumFilter;
+
+  onChange: (
+    filter: ForumFilter
+  ) => void;
 }
 
-const FILTERS = [
-  "Latest",
-  "Most Answered",
-  "Unanswered",
-];
-
 export function FilterChips({
-  value,
+  active,
   onChange,
 }: Props) {
   return (
@@ -21,24 +22,24 @@ export function FilterChips({
       showsHorizontalScrollIndicator={false}
       contentContainerClassName="px-4 py-3"
     >
-      {FILTERS.map((item) => (
+      {FORUM_FILTERS.map((filter) => (
         <Pressable
-          key={item}
-          onPress={() => onChange(item)}
+          key={filter}
+          onPress={() => onChange(filter)}
           className={`mr-2 rounded-full border px-4 py-2 ${
-            value === item
+            active === filter
               ? "border-pro-circle bg-pro-circle"
               : "border-border bg-muted"
           }`}
         >
           <Text
             className={`text-xs font-semibold ${
-              value === item
+              active === filter
                 ? "text-white"
                 : "text-muted-foreground"
             }`}
           >
-            {item}
+            {filter}
           </Text>
         </Pressable>
       ))}

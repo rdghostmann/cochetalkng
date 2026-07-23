@@ -1,19 +1,19 @@
+// components/forum/QuestionFeed.tsx
 import { Href, router } from "expo-router";
 import { FlatList } from "react-native";
 
-import { QuestionEmptyState } from "./QuestionEmptyState";
 import { QuestionCard } from "../ui/QuestionCard";
-import { ForumQuestion } from "@/types/forum.types";
+import { QuestionEmptyState } from "./QuestionEmptyState";
 
-// import type {
-//   ForumAnswer,
-//   ForumQuestion,
-// } from "@/types/forum";
+import type {
+  ForumQuestion,
+  Answer,
+} from "@/types/forum.types";
 
 interface QuestionFeedProps {
   questions: ForumQuestion[];
 
-  answers: ForumAnswer[];
+  answers: Answer[];
 }
 
 export function QuestionFeed({
@@ -26,9 +26,7 @@ export function QuestionFeed({
       keyExtractor={(item) => item.id}
       showsVerticalScrollIndicator={false}
       contentContainerClassName="px-4 pt-3 pb-36"
-      ListEmptyComponent={
-        <QuestionEmptyState />
-      }
+      ListEmptyComponent={<QuestionEmptyState />}
       renderItem={({ item }) => (
         <QuestionCard
           question={item}
@@ -40,8 +38,7 @@ export function QuestionFeed({
           }
           onUserPress={() =>
             router.push({
-              pathname:
-                "/seller/[id]",
+              pathname: "/seller/[id]",
               params: {
                 id: item.userId,
               },

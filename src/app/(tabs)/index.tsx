@@ -34,6 +34,7 @@ export default function ForumScreen() {
         closeAskModal,
 
         filteredQuestions,
+        answers,
         tags,
 
         askQuestion,
@@ -67,7 +68,7 @@ export default function ForumScreen() {
                     onChangeText={setSearchQuery}
                 />
             )}
-            
+
             <AnnouncementBanner />
 
             <FilterChips
@@ -83,6 +84,7 @@ export default function ForumScreen() {
 
             <QuestionFeed
                 questions={filteredQuestions}
+                answers={answers}
             />
 
             <SponsoredBanner

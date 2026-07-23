@@ -12,10 +12,6 @@ import type {
 } from "@/types/forum.types";
 import { extractQuestionTags, filterQuestions } from "@/utils/forum";
 
-// import {
-//   filterQuestions,
-//   extractQuestionTags,
-// } from "@/utils/forum";
 
 interface CMSConfig {
   forumLogoUri?: string;
