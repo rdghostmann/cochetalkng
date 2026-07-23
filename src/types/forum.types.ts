@@ -31,9 +31,17 @@ export interface ForumUser {
 
   verified: boolean;
 
-  specialization?: string;
-
   location?: string;
+
+  specialization?: string[];
+
+  businessName?: string;
+
+  phone?: string;
+
+  whatsappEnabled?: boolean;
+
+  experience?: number;
 }
 
 /**

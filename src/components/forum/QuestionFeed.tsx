@@ -37,12 +37,9 @@ export function QuestionFeed({
             ).length
           }
           onUserPress={() =>
-            router.push({
-              pathname: "/seller/[id]",
-              params: {
-                id: item.userId,
-              },
-            } as Href)
+            router.push(
+              `/(protected)/seller/${item.userId}` as Href
+            )
           }
         />
       )}

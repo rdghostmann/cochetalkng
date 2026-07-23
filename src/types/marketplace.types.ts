@@ -12,7 +12,6 @@ export type MarketplaceCategory =
 
 export interface MarketplaceListing {
   id: string;
-
   title: string;
 
   description: string;
@@ -36,6 +35,10 @@ export interface MarketplaceListing {
   category: MarketplaceCategory;
 
   location: string;
+
+  phone?: string;
+
+  whatsappEnabled?: boolean;
 
   images: string[];
 

@@ -1,144 +1,70 @@
-import React from "react";
-import {
-  View,
-  Text,
- TouchableOpacity,
-  Linking,
-  Alert,
-} from "react-native";
+// src/components/ui/ListingCard.tsx
+
 import { Feather } from "@expo/vector-icons";
+import { Alert, Linking, Text, TouchableOpacity, View } from "react-native";
 
-export interface ListingCardProps {
-  id: number;
+import { CATEGORY_COLORS } from "@/constants/forum";
+import type { MarketplaceListing } from "@/types/marketplace.types";
+import { formatPrice, timeAgo } from "@/utils/utils";
 
-  title: string;
-  description?: string;
-
-  price: number;
-
-  category:
-    | "Parts"
-    | "Services"
-    | "Car Sales";
-
-  sellerName: string;
-
-  sellerId: string;
-
-  sellerPhone?: string;
-
-  sellerLocation: string;
-
-  sellerWhatsAppEnabled?: boolean;
-
-  timestamp: number;
-
-  approved?: boolean;
-
-  featured?: boolean;
-
-  brand?: string;
-
-  grade?: string;
-
-  vehicleInfo?: string;
-
-  image?: string;
+interface ListingCardProps {
+  listing: MarketplaceListing;
 
   showAdminActions?: boolean;
-
   showContactActions?: boolean;
 
-  onPress?: () => void;
+  onPress?: (listing: MarketplaceListing) => void;
+  onSellerPress?: (listing: MarketplaceListing) => void;
+  onMessage?: (listing: MarketplaceListing) => void;
 
-  onSellerPress?: () => void;
-
-  onMessage?: () => void;
-
-  onApprove?: () => void;
-
-  onDelete?: () => void;
+  onApprove?: (listing: MarketplaceListing) => void;
+  onDelete?: (listing: MarketplaceListing) => void;
 }
 
-const CATEGORY_COLORS = {
-  Parts: "#3B82F6",
-  Services: "#10B981",
-  "Car Sales": "#F59E0B",
-};
 
-function timeAgo(ts: number) {
-  const diff = Date.now() - ts;
-
-  const mins = Math.floor(diff / 60000);
-
-  if (mins < 1) return "Just now";
-
-  if (mins < 60) return `${mins}m`;
-
-  const hrs = Math.floor(mins / 60);
-
-  if (hrs < 24) return `${hrs}h`;
-
-  return `${Math.floor(hrs / 24)}d`;
-}
-
-function formatPrice(price: number) {
-  return `₦${price.toLocaleString()}`;
-}
 
 export default function ListingCard({
-  title,
-  description,
- price,
-
-  category,
-
-  sellerName,
-
-  sellerPhone,
-
-  sellerLocation,
-
-  sellerWhatsAppEnabled,
-
-  timestamp,
-
-  approved = true,
-
-  brand,
-
-  grade,
-
-  vehicleInfo,
-
+  listing,
   showAdminActions = false,
-
   showContactActions = true,
-
   onPress,
-
   onSellerPress,
-
   onMessage,
-
   onApprove,
-
   onDelete,
 }: ListingCardProps) {
+  const {
+    title,
+    description,
+    price,
+    category,
+
+    timestamp,
+
+    userId,
+    userName,
+    location,
+
+    images,
+    vehicle,
+
+    isApproved,
+
+    sellerId,
+    phone: sellerPhone,
+    whatsappEnabled: sellerWhatsAppEnabled,
+  } = listing;
+
   const categoryColor =
-    CATEGORY_COLORS[category];
+    CATEGORY_COLORS[category as keyof typeof CATEGORY_COLORS] ??
+    "#2563EB";
 
   function openWhatsApp() {
     if (!sellerPhone) return;
 
-    const phone = sellerPhone.replace(
-      /\D/g,
-      ""
-    );
+    const phone = sellerPhone.replace(/\D/g, "");
 
-    Linking.openURL(
-      `https://wa.me/${phone}`
-    ).catch(() =>
+    Linking.openURL(`https://wa.me/${phone}`).catch(() =>
       Alert.alert(
         "WhatsApp",
         "Unable to open WhatsApp."
@@ -149,52 +75,44 @@ export default function ListingCard({
   return (
     <View className="mx-4 my-2 rounded-2xl border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900">
 
-      {!approved && (
+      {!isApproved && (
         <View className="mb-4 self-start rounded-full bg-yellow-100 px-3 py-1">
-
           <Text className="text-xs font-semibold text-yellow-700">
-
             Pending Approval
-
           </Text>
-
         </View>
       )}
 
       <TouchableOpacity
-        activeOpacity={0.8}
-        onPress={onPress}
+        activeOpacity={0.85}
+        onPress={() => onPress?.(listing)}
       >
         <View className="mb-3 flex-row items-center justify-between">
 
           <View
             className="rounded-full px-3 py-1"
             style={{
-              backgroundColor:
-                `${categoryColor}20`,
+              backgroundColor: `${categoryColor}20`,
             }}
           >
             <Text
+              className="text-xs font-semibold"
               style={{
                 color: categoryColor,
               }}
-              className="text-xs font-semibold"
             >
               {category}
             </Text>
           </View>
 
           <Text className="text-lg font-bold text-emerald-600">
-
             {formatPrice(price)}
-
           </Text>
+
         </View>
 
         <Text className="text-base font-bold text-zinc-900 dark:text-white">
-
           {title}
-
         </Text>
 
         {!!description && (
@@ -206,40 +124,37 @@ export default function ListingCard({
           </Text>
         )}
 
-        {!!vehicleInfo && (
+        {!!vehicle && (
           <Text className="mt-2 text-xs text-zinc-500">
-
-            {vehicleInfo}
-
+            {[
+              vehicle.year,
+              vehicle.make,
+              vehicle.model,
+            ]
+              .filter(Boolean)
+              .join(" • ")}
           </Text>
         )}
 
-        {(brand || grade) && (
-          <View className="mt-3 flex-row">
+        {!!vehicle && (
+          <View className="mt-3 flex-row flex-wrap">
 
-            {brand && (
+            {vehicle.transmission && (
               <View className="mr-2 rounded-full bg-zinc-100 px-3 py-1">
-
                 <Text className="text-xs">
-
-                  {brand}
-
+                  {vehicle.transmission}
                 </Text>
-
               </View>
             )}
 
-            {grade && (
+            {vehicle.fuelType && (
               <View className="rounded-full bg-zinc-100 px-3 py-1">
-
                 <Text className="text-xs">
-
-                  {grade}
-
+                  {vehicle.fuelType}
                 </Text>
-
               </View>
             )}
+
           </View>
         )}
       </TouchableOpacity>
@@ -247,48 +162,40 @@ export default function ListingCard({
       <View className="mt-5 flex-row items-center justify-between">
 
         <TouchableOpacity
-          onPress={onSellerPress}
+          onPress={() => onSellerPress?.(listing)}
           className="flex-row items-center"
         >
           <View className="mr-3 h-10 w-10 items-center justify-center rounded-full bg-emerald-100">
 
             <Text className="font-bold text-emerald-700">
-
-              {sellerName[0]}
-
-            </Text>
+              {userName.charAt(0).toUpperCase()}            </Text>
 
           </View>
 
           <View>
 
             <Text className="font-semibold text-zinc-900 dark:text-white">
-
-              {sellerName}
-
+              {userName}
             </Text>
 
             <Text className="text-xs text-zinc-500">
-
-              {sellerLocation}
-
+              {location}
             </Text>
 
           </View>
         </TouchableOpacity>
 
         <Text className="text-xs text-zinc-500">
-
           {timeAgo(timestamp)}
-
         </Text>
+
       </View>
 
       {showContactActions && (
         <View className="mt-5 flex-row">
 
           <TouchableOpacity
-            onPress={onMessage}
+            onPress={() => onMessage?.(listing)}
             className="mr-2 flex-1 flex-row items-center justify-center rounded-xl bg-emerald-500 py-3"
           >
             <Feather
@@ -298,10 +205,9 @@ export default function ListingCard({
             />
 
             <Text className="ml-2 font-semibold text-white">
-
               Message
-
             </Text>
+
           </TouchableOpacity>
 
           {sellerWhatsAppEnabled && (
@@ -311,17 +217,17 @@ export default function ListingCard({
             >
               <Feather
                 name="phone"
-                color="#22C55E"
                 size={16}
+                color="#22C55E"
               />
 
               <Text className="ml-2 font-semibold text-green-600">
-
                 WhatsApp
-
               </Text>
+
             </TouchableOpacity>
           )}
+
         </View>
       )}
 
@@ -329,20 +235,16 @@ export default function ListingCard({
         <View className="mt-5 flex-row">
 
           <TouchableOpacity
-            onPress={onApprove}
+            onPress={() => onApprove?.(listing)}
             className="mr-2 flex-1 rounded-xl bg-blue-500 py-3"
           >
             <Text className="text-center font-semibold text-white">
-
-              {approved
-                ? "Unapprove"
-                : "Approve"}
-
+              {isApproved ? "Unapprove" : "Approve"}
             </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={onDelete}
+            onPress={() => onDelete?.(listing)}
             className="items-center justify-center rounded-xl bg-red-500 px-5"
           >
             <Feather
@@ -351,6 +253,7 @@ export default function ListingCard({
               color="white"
             />
           </TouchableOpacity>
+
         </View>
       )}
     </View>
