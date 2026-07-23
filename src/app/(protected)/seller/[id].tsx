@@ -1,18 +1,21 @@
 // .src/app/(protected)/seller/[id].tsx
+import { RatingModal } from "@/components/forum/RatingModal";
+import { useSeller } from "@/hooks/useSeller";
+import { useForumStore } from "@/store/forum.store";
+import { useRatingStore } from "@/store/rating.store";
+import { makeConversationId } from "@/utils/chat";
 import {
   router,
   useLocalSearchParams,
 } from "expo-router";
-import { useMemo, useState } from 'react';
+import { useMemo, useState } from "react";
 import {
   Linking,
   ScrollView,
   Text,
 } from "react-native";
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { SellerActions, SellerAvatar, SellerHeader, SellerInfo, SellerListingSection, SellerQuestionSection, SellerReviewSection, SellerStats } from './components';
-import { RatingModal } from '@/components/forum/RatingModal';
-import { makeConversationId } from "@/utils/chat";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { SellerActions, SellerAvatar, SellerHeader, SellerInfo, SellerListingSection, SellerQuestionSection, SellerReviewSection, SellerStats } from "./components";
 
 
 export default function SellerProfileScreen() {
@@ -25,42 +28,43 @@ export default function SellerProfileScreen() {
   const [feedback, setFeedback] = useState("");
 
 
-  const seller = useMemo(
-    () =>
-      users.find(
-        (user) => user.id === id
-      ),
-    [users, id]
+  const sellerId = typeof id === "string" ? id : "";
+
+  const {
+    seller,
+    sellerListings,
+    sellerQuestions,
+    sellerRatings,
+    averageRating,
+  } = useSeller(sellerId);
+
+  const answers = useForumStore((state) => state.answers);
+  const currentUser = useForumStore((state) => state.currentUser);
+  const addRating = useRatingStore((state) => state.addRating);
+
+  const displayedQuestions = useMemo(
+    () => sellerQuestions.slice(0, 5),
+    [sellerQuestions]
   );
 
-  const sellerListings = useMemo(
-    () => listings.filter((l) => l.userId === id && l.isApproved).sort((a, b) => b.timestamp - a.timestamp),
-    [listings, id],
-  );
-
-  const sellerQuestions = useMemo(
-    () => questions.filter((q) => q.userId === id && !q.isPrivateEcosystem).sort((a, b) => b.timestamp - a.timestamp).slice(0, 5),
-    [questions, id],
-  );
-
-  const sellerRatings = useMemo(() => ratings.filter((r) => r.providerId === id), [ratings, id]);
-
-  const avgRating = sellerRatings.length ? sellerRatings.reduce((sum, r) => sum + r.ratingValue, 0) / sellerRatings.length : 0;
-
-  const myRating = currentUser ? sellerRatings.find((r) => r.raterId === currentUser.id) : null;
-  const canRate = currentUser && currentUser.id !== id && seller?.role === 'Service Provider';
-  const canMessage = currentUser && currentUser.id !== id;
+  const canRate =
+    !!currentUser &&
+    currentUser.id !== sellerId &&
+    seller?.role === "Service Provider";
+  const canMessage = !!currentUser && currentUser.id !== sellerId;
 
   const handleSubmitRating = () => {
-    if (!seller) return;
+    if (!seller || !currentUser || !feedback.trim()) return;
 
-    if (!feedback.trim()) return;
-
-    addRating(
-      seller.id,
-      rating,
-      feedback.trim()
-    );
+    addRating({
+      id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+      providerId: seller.id,
+      raterId: currentUser.id,
+      raterName: currentUser.name,
+      ratingValue: rating,
+      feedback: feedback.trim(),
+      timestamp: Date.now(),
+    });
 
     setShowRatingModal(false);
     setRating(5);
@@ -76,9 +80,7 @@ export default function SellerProfileScreen() {
       seller.id
     );
 
-    router.push(
-      `/(protected)/conversation/${conversationId}`
-    );
+    // router.push( `/(protected)/conversation/${conversationId}`);   );
   };
 
   const handleWhatsapp = () => {
@@ -142,26 +144,24 @@ export default function SellerProfileScreen() {
 
         <SellerStats
           listings={sellerListings.length}
-          questions={sellerQuestions.length}
+          questions={displayedQuestions.length}
           reviews={sellerRatings.length}
-          rating={avgRating}
+          rating={averageRating}
         />
 
         <SellerActions
-          canMessage={!!canMessage}
-          canRate={!!canRate}
+          canMessage={canMessage}
+          canRate={canRate}
           whatsappEnabled={seller.whatsappEnabled}
           onMessage={handleMessage}
           onWhatsapp={handleWhatsapp}
-          onRate={() => setShowRateModal(true)}
+          onRate={() => setShowRatingModal(true)}
         />
 
-        <SellerListingSection
-          listings={sellerListings}
-        />
+        <SellerListingSection listings={sellerListings} />
 
         <SellerQuestionSection
-          questions={sellerQuestions}
+          questions={displayedQuestions}
           answers={answers}
         />
 
@@ -187,4 +187,3 @@ export default function SellerProfileScreen() {
     </SafeAreaView>
   );
 }
-
