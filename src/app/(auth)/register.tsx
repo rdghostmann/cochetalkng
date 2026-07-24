@@ -1,143 +1,123 @@
 // src/app/(auth)/register.tsx
 
-import { Link } from "expo-router";
-import {
-  View,
-  Text,
-  TextInput,
-  Pressable,
-} from "react-native";
+import { View } from "react-native";
 
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import {
-  RegisterSchema,
-  RegisterFormData,
+    RegisterSchema,
+    RegisterFormData,
 } from "@/features/auth/validation/auth.schema";
 
 import { useRegister } from "@/hooks/useRegister";
 
+import {
+    AuthHeader,
+    AuthInput,
+    PasswordInput,
+    PrimaryButton,
+    AuthFooter,
+    AuthDivider,
+    SocialLogin,
+} from "./components";
+
 export default function RegisterScreen() {
-  const { registerUser, loading } =
-    useRegister();
 
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<RegisterFormData>({
-    resolver: zodResolver(RegisterSchema),
-    defaultValues: {
-      fullName: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-    },
-  });
+    const { registerUser, loading } = useRegister();
 
-  return (
-    <View className="flex-1 justify-center bg-white px-6">
+    const {
+        setValue,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<RegisterFormData>({
+        resolver: zodResolver(RegisterSchema),
 
-      <Text className="mb-2 text-3xl font-bold">
-        Create Account
-      </Text>
+        defaultValues: {
+            fullName: "",
+            email: "",
+            password: "",
+            confirmPassword: "",
+        },
+    });
 
-      <Text className="mb-8 text-gray-500">
-        Join the CocheTalk community.
-      </Text>
+    function onSubmit(data: RegisterFormData) {
+        registerUser(data);
+    }
 
-      <Controller
-        control={control}
-        name="fullName"
-        render={({ field }) => (
-          <TextInput
-            placeholder="Full Name"
-            className="mb-2 rounded-xl border p-4"
-            value={field.value}
-            onChangeText={field.onChange}
-          />
-        )}
-      />
+    return (
+        <View className="flex-1 justify-center bg-background px-6">
 
-      <Text className="mb-4 text-red-500">
-        {errors.fullName?.message}
-      </Text>
+            <AuthHeader
+                title="Create Account 🚗"
+                subtitle="Join Nigeria's trusted automotive community."
+            />
 
-      <Controller
-        control={control}
-        name="email"
-        render={({ field }) => (
-          <TextInput
-            placeholder="Email"
-            keyboardType="email-address"
-            autoCapitalize="none"
-            className="mb-2 rounded-xl border p-4"
-            value={field.value}
-            onChangeText={field.onChange}
-          />
-        )}
-      />
+            <AuthInput
+                label="Full Name"
+                placeholder="Enter your full name"
+                autoCapitalize="words"
+                error={errors.fullName?.message}
+                onChangeText={(text) =>
+                    setValue("fullName", text, {
+                        shouldValidate: true,
+                    })
+                }
+            />
 
-      <Text className="mb-4 text-red-500">
-        {errors.email?.message}
-      </Text>
+            <AuthInput
+                label="Email Address"
+                placeholder="Enter your email"
+                keyboardType="email-address"
+                autoCapitalize="none"
+                autoCorrect={false}
+                error={errors.email?.message}
+                onChangeText={(text) =>
+                    setValue("email", text, {
+                        shouldValidate: true,
+                    })
+                }
+            />
 
-      <Controller
-        control={control}
-        name="password"
-        render={({ field }) => (
-          <TextInput
-            placeholder="Password"
-            secureTextEntry
-            className="mb-2 rounded-xl border p-4"
-            value={field.value}
-            onChangeText={field.onChange}
-          />
-        )}
-      />
+            <PasswordInput
+                label="Password"
+                placeholder="Create a password"
+                error={errors.password?.message}
+                onChangeText={(text) =>
+                    setValue("password", text, {
+                        shouldValidate: true,
+                    })
+                }
+            />
 
-      <Text className="mb-4 text-red-500">
-        {errors.password?.message}
-      </Text>
+            <PasswordInput
+                label="Confirm Password"
+                placeholder="Confirm your password"
+                error={errors.confirmPassword?.message}
+                onChangeText={(text) =>
+                    setValue("confirmPassword", text, {
+                        shouldValidate: true,
+                    })
+                }
+            />
 
-      <Controller
-        control={control}
-        name="confirmPassword"
-        render={({ field }) => (
-          <TextInput
-            placeholder="Confirm Password"
-            secureTextEntry
-            className="mb-2 rounded-xl border p-4"
-            value={field.value}
-            onChangeText={field.onChange}
-          />
-        )}
-      />
+            <PrimaryButton
+                title="Create Account"
+                loading={loading}
+                onPress={handleSubmit(onSubmit)}
+                className="mt-8"
+            />
 
-      <Text className="mb-6 text-red-500">
-        {errors.confirmPassword?.message}
-      </Text>
+            <AuthDivider text="or continue with" />
 
-      <Pressable
-        disabled={loading}
-        onPress={handleSubmit(registerUser)}
-        className="rounded-xl bg-primary p-4"
-      >
-        <Text className="text-center font-semibold text-white">
-          {loading
-            ? "Creating Account..."
-            : "Create Account"}
-        </Text>
-      </Pressable>
+            <SocialLogin loading={loading} />
 
-      <Link
-        href="/(auth)/login"
-        className="mt-6 text-center text-primary"
-      >
-        Already have an account? Login
-      </Link>
+            <AuthFooter
+                text="Already have an account?"
+                linkText="Login"
+                href="/(auth)/login"
+            />
 
-    </View>
-  );
+        </View>
+    );
 }
