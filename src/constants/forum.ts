@@ -1,6 +1,6 @@
 // constants/forum.ts
 
-import type { ForumFilter } from "@/types/forum.types";
+import type { ForumFilter } from "@/types/types";
 
 /**
  * ---------------------------------------
@@ -9,9 +9,10 @@ import type { ForumFilter } from "@/types/forum.types";
  */
 
 export const FORUM_FILTERS: ForumFilter[] = [
-  "Latest",
+  "All",
   "Most Answered",
   "Unanswered",
+  "Solved"
 ];
 
 /**

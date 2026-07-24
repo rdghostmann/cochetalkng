@@ -1,10 +1,10 @@
+// components/forum/TagFilter.tsx
+
 import { Pressable, ScrollView, Text } from "react-native";
 
 interface TagFilterProps {
   tags: string[];
-
   active?: string;
-
   onChange: (tag: string) => void;
 }
 
@@ -21,9 +21,28 @@ export function TagFilter({
     <ScrollView
       horizontal
       showsHorizontalScrollIndicator={false}
-      className="mt-3"
-      contentContainerClassName="px-4"
+      contentContainerClassName="px-4 py-3"
     >
+      {/* All Tags */}
+      <Pressable
+        onPress={() => onChange("")}
+        className={`mr-2 rounded-xl border px-4 py-2 ${
+          !active
+            ? "border-foreground bg-foreground"
+            : "border-border bg-card"
+        }`}
+      >
+        <Text
+          className={`text-xs font-bold ${
+            !active
+              ? "text-background"
+              : "text-muted-foreground"
+          }`}
+        >
+          All Tags
+        </Text>
+      </Pressable>
+
       {tags.map((tag) => {
         const selected = active === tag;
 
@@ -33,14 +52,14 @@ export function TagFilter({
             onPress={() =>
               onChange(selected ? "" : tag)
             }
-            className={`mr-2 rounded-full border px-4 py-2 ${
+            className={`mr-2 rounded-md border px-4 py-2 ${
               selected
                 ? "border-primary bg-primary"
                 : "border-border bg-card"
             }`}
           >
             <Text
-              className={`text-sm font-medium ${
+              className={`text-xs font-semibold ${
                 selected
                   ? "text-primary-foreground"
                   : "text-muted-foreground"

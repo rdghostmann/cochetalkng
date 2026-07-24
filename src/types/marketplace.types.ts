@@ -4,11 +4,7 @@ export type MarketplaceCategory =
   | "Parts"
   | "Services"
   | "Car Sales"
-  | "Accessories"
-  | "Tyres"
-  | "Batteries"
-  | "Lubricants"
-  | "Other";
+  | "Tools & Diagnostics";
 
 export interface MarketplaceListing {
   id: string;

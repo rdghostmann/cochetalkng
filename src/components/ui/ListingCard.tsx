@@ -4,7 +4,7 @@ import { Feather } from "@expo/vector-icons";
 import { Alert, Linking, Text, TouchableOpacity, View } from "react-native";
 
 import { CATEGORY_COLORS } from "@/constants/forum";
-import type { MarketplaceListing } from "@/types/marketplace.types";
+import type { MarketplaceListing } from "@/types/types";
 import { formatPrice, timeAgo } from "@/utils/utils";
 
 interface ListingCardProps {
@@ -38,20 +38,12 @@ export default function ListingCard({
     description,
     price,
     category,
-
-    timestamp,
-
-    userId,
-    userName,
+    createdAt,
+    sellerName,
     location,
-
-    images,
     vehicle,
-
     isApproved,
-
-    sellerId,
-    phone: sellerPhone,
+    whatsappNumber: sellerPhone,
     whatsappEnabled: sellerWhatsAppEnabled,
   } = listing;
 
@@ -168,14 +160,15 @@ export default function ListingCard({
           <View className="mr-3 h-10 w-10 items-center justify-center rounded-full bg-emerald-100">
 
             <Text className="font-bold text-emerald-700">
-              {userName.charAt(0).toUpperCase()}            </Text>
+              {sellerName.charAt(0).toUpperCase()}
+            </Text>
 
           </View>
 
           <View>
 
             <Text className="font-semibold text-zinc-900 dark:text-white">
-              {userName}
+              {sellerName}
             </Text>
 
             <Text className="text-xs text-zinc-500">
@@ -186,7 +179,7 @@ export default function ListingCard({
         </TouchableOpacity>
 
         <Text className="text-xs text-zinc-500">
-          {timeAgo(timestamp)}
+          {timeAgo(new Date(createdAt).getTime())}
         </Text>
 
       </View>

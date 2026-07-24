@@ -252,8 +252,10 @@ export interface Rating {
 }
 
 export type ForumFilter =
+    | "All"
     | "Latest"
     | "Most Answered"
+    | "Solved"
     | "Unanswered";
 
 export interface Author {

@@ -64,9 +64,9 @@ export default function ForumScreen() {
                 onToggleSearch={toggleSearch}
             />
 
-            {/* <ForumHero
+            <ForumHero
                 onPress={openAskModal}
-            /> */}
+            />
 
             {/* {showSearch && ( */}
             <SearchBar
@@ -78,7 +78,7 @@ export default function ForumScreen() {
 
 
 
-            <AnnouncementBanner />
+            {/* <AnnouncementBanner /> */}
 
             <FilterChips
                 active={activeFilter}
