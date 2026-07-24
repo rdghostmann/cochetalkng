@@ -25,65 +25,38 @@ export function AuthNavigator() {
 
     if (!initialized || loading) return;
 
-    const inAuthGroup =
-      segments[0] === "(auth)";
+    const root = segments[0];
 
-    const inProtectedGroup =
-      segments[0] === "(protected)";
-
-    const emailVerified =
-      !!user?.email_confirmed_at;
-
-    /**
-     * -----------------------------
-     * Guest User
-     * -----------------------------
-     */
-
+    const isAuth = root === "(auth)";
+    const isTabs = root === "(tabs)";
+    // Guest
     if (!session) {
-      if (!inAuthGroup) {
+      if (!isAuth) {
         router.replace("/(auth)/login");
       }
 
       return;
     }
 
-    /**
-     * -----------------------------
-     * Logged in but Email NOT verified
-     * -----------------------------
-     */
-
-    if (!emailVerified) {
-      if (
-        segments[1] !== "verify-email"
-      ) {
-        router.replace(
-          "/(auth)/verify-email"
-        );
+    // Logged in but email not verified
+    if (!user?.email_confirmed_at) {
+      if (segments[1] !== "verify-email") {
+        router.replace("/(auth)/verify-email");
       }
 
       return;
     }
 
-    /**
-     * -----------------------------
-     * Logged in & Verified
-     * -----------------------------
-     */
-
-    if (
-      inAuthGroup ||
-      !inProtectedGroup
-    ) {
-      router.replace("/(protected)/marketplace");
+    // Logged in
+    if (!isTabs) {
+      router.replace("/(tabs)");
     }
   }, [
-    navigationState?.key,
     initialized,
     loading,
     session,
     user,
+    navigationState?.key,
     segments,
   ]);
 

@@ -4,13 +4,13 @@ import { useMemo, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 
-import { FilterChips } from "@/components/pro/FilterChips";
-import { FloatingAskButton } from "@/components/pro/FloatingAskButton";
-import { ProHeader } from "@/components/pro/ProHeader";
-import { RestrictedProView } from "@/components/pro/RestrictedProView";
-import { ProQuestionList } from "@/components/pro/ProQuestionList";
-import { EmptyProQuestions } from "@/components/pro/EmptyProQuestion";
-import { AskQuestionModal } from "@/components/pro/AskQuestionModal";
+// import { FilterChips } from "@/components/pro/FilterChips";
+// import { FloatingAskButton } from "@/components/pro/FloatingAskButton";
+// import { ProHeader } from "@/components/pro/ProHeader";
+// import { RestrictedProView } from "@/components/pro/RestrictedProView";
+// import { ProQuestionList } from "@/components/pro/ProQuestionList";
+// import { EmptyProQuestions } from "@/components/pro/EmptyProQuestion";
+// import { AskQuestionModal } from "@/components/pro/AskQuestionModal";
 
 const FILTERS = [
   "Latest",

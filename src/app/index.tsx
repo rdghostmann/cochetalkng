@@ -38,7 +38,8 @@ export default function HomeScreen() {
         Contact
       </Link>
 
-      <Text>Instruments</Text>
+      <Text className="font-extrabold">Instruments</Text>
+      <Text className="text-gray-500 mb-4">List of instruments fetched from Supabase to test the integration.</Text>
       <FlatList<Instrument>
         data={instruments}
         keyExtractor={(item) => item.id.toString()}

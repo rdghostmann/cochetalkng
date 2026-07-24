@@ -1,6 +1,5 @@
 // src/hooks/useRegister.ts
 import { Alert } from "react-native";
-import { router } from "expo-router";
 import { useState } from "react";
 
 import { AuthService } from "@/features/auth/services/auth.service";
@@ -44,8 +43,6 @@ export function useRegister() {
         "Account Created",
         "Please verify your email before signing in."
       );
-
-      router.replace("/(auth)/verify-email");
     } catch (err: any) {
       Alert.alert(
         "Registration Failed",

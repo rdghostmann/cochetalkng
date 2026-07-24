@@ -14,7 +14,7 @@ export function AuthHeader({
 
       <Image
         source={require("@/assets/images/icon.png")}
-        className="h-24 w-24 rounded-3xl"
+        className="hidden h-24 w-24 rounded-3xl"
         resizeMode="contain"
       />
 

@@ -46,7 +46,7 @@ export default function RegisterScreen() {
     }
 
     return (
-        <View className="flex-1 justify-center bg-background px-6">
+        <View className="py-10 flex-1 justify-center bg-background px-6">
 
             <AuthHeader
                 title="Create Account 🚗"

@@ -1,3 +1,4 @@
+// src/providers/ProviderRating.types.ts
 export interface ProviderRating {
   id: string;
 

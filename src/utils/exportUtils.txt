@@ -1,6 +1,6 @@
 // src/utils/exportUtils.ts
 import { ProviderRating } from '@/providers/ProviderRating.types';
-import { Answer, Question } from '@/types/forum.types';
+import { Answer, ForumQuestion,  } from '@/types/forum.types';
 import { MarketplaceListing } from '@/types/marketplace.types';
 import { UserProfile } from '@/types/profile.types';
 import * as FileSystem from 'expo-file-system/legacy';
@@ -53,7 +53,7 @@ async function triggerDownload(filename: string, csv: string): Promise<void> {
 
 export async function exportUsersReport(
   users: UserProfile[],
-  questions: Question[],
+  questions: ForumQuestion[],
   answers: Answer[],
   listings: MarketplaceListing[],
   ratings: ProviderRating[],
@@ -108,7 +108,7 @@ export async function exportUsersReport(
 }
 
 export async function exportActivitiesReport(
-  questions: Question[],
+  questions: ForumQuestion[],
   answers: Answer[],
   listings: MarketplaceListing[],
   ratings: ProviderRating[],

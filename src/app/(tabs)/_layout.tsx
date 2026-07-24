@@ -22,10 +22,11 @@ export default function TabsLayout() {
     clinicVisible,
   } = useAppStore();
 
-  const role =
-    user?.user_metadata?.role ??
-    "Car Owner";
-
+ const role =
+  user?.app_metadata?.role ??
+  user?.user_metadata?.role ??
+  "Car Owner";
+  
   const isAdmin =
     role === "Admin";
 
