@@ -110,7 +110,7 @@ export async function exportUsersReport(
         : "";
 
     return [
-      user.fullName,
+      user.full_name,
       user.email,
       String(
         questionCount.get(user.id) ?? 0,

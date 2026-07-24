@@ -134,7 +134,7 @@ export async function exportAnalyticsReport(
 
   const contributors = users
     .map((user) => ({
-      name: user.fullName,
+      name: user.full_name,
 
       score:
         (questionCount.get(user.id) ??
