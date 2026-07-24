@@ -39,13 +39,13 @@ export function AuthNavigator() {
     }
 
     // Logged in but email not verified
-    if (!user?.email_confirmed_at) {
-      if (segments[1] !== "verify-email") {
-        router.replace("/(auth)/verify-email");
-      }
+    // if (!user?.email_confirmed_at) {
+    //   if (segments[1] !== "verify-email") {
+    //     router.replace("/(auth)/verify-email");
+    //   }
 
-      return;
-    }
+    //   return;
+    // }
 
     // Logged in
     if (!isTabs) {

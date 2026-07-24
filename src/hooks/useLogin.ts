@@ -1,9 +1,11 @@
-// .src/hooks/useLogin.ts
+// src/hooks/useLogin.ts
+
 import { Alert } from "react-native";
 import { useState } from "react";
+import { router } from "expo-router";
 
-import { AuthService } from "@/features/auth/services/auth.service";
 import { LoginFormData } from "@/features/auth/validation/auth.schema";
+import { AuthController } from "@/features/auth/controller/auth.controller";
 
 export function useLogin() {
   const [loading, setLoading] = useState(false);
@@ -14,28 +16,16 @@ export function useLogin() {
     try {
       setLoading(true);
 
-      const {
-        data: result,
-        error,
-      } = await AuthService.signIn(
+      await AuthController.signIn(
         data.email,
         data.password
       );
 
-      if (error) throw error;
-
-      if (!result.user?.email_confirmed_at) {
-        Alert.alert(
-          "Verify Email",
-          "Please verify your email before logging in."
-        );
-
-        return;
-      }
+      router.replace("/(tabs)");
     } catch (err: any) {
       Alert.alert(
         "Login Failed",
-        err.message
+        err?.message ?? "Unable to sign in."
       );
     } finally {
       setLoading(false);

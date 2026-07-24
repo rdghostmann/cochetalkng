@@ -2,11 +2,7 @@ import { Feather } from "@expo/vector-icons";
 import { Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import { useLogout } from "@/hooks/useLogout";
-
-export default function ProfileScreen() {
-  const { logout } = useLogout();
-
+export default function NotificationsScreen() {
   return (
     <SafeAreaView
       edges={["top"]}
@@ -15,25 +11,18 @@ export default function ProfileScreen() {
       <View className="flex-1 items-center justify-center px-6">
         <View className="h-20 w-20 items-center justify-center rounded-full bg-primary/10">
           <Feather
-            name="user"
+            name="bell"
             size={36}
             color="#00EBBA"
           />
         </View>
 
         <Text className="mt-6 text-2xl font-bold text-foreground">
-          Profile
+          Notifications
         </Text>
 
         <Text className="mt-3 text-center text-muted-foreground">
-          This is Profile.
-        </Text>
-
-        <Text
-          onPress={logout}
-          className="mt-10 rounded-xl bg-primary px-6 py-3 font-semibold text-primary-foreground"
-        >
-          Logout
+          This is Notifications.
         </Text>
       </View>
     </SafeAreaView>
