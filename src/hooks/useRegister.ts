@@ -1,11 +1,12 @@
 // src/hooks/useRegister.ts
+import { Alert } from "react-native";
+import { router } from "expo-router";
 import { useState } from "react";
 
 import { AuthService } from "@/features/auth/services/auth.service";
 import { RegisterFormData } from "@/features/auth/validation/auth.schema";
 
 export function useRegister() {
-
   const [loading, setLoading] = useState(false);
 
   async function registerUser(
@@ -14,12 +15,14 @@ export function useRegister() {
     try {
       setLoading(true);
 
-      const { data: authData, error } =
-        await AuthService.signUp(
-          data.email,
-          data.password,
-          data.fullName
-        );
+      const {
+        data: authData,
+        error,
+      } = await AuthService.signUp(
+        data.email,
+        data.password,
+        data.fullName
+      );
 
       if (error) throw error;
 
@@ -37,17 +40,24 @@ export function useRegister() {
         full_name: data.fullName,
       });
 
-    } catch (error: any) {
-      console.log(error);
+      Alert.alert(
+        "Account Created",
+        "Please verify your email before signing in."
+      );
 
-      alert(error.message);
+      router.replace("/(auth)/verify-email");
+    } catch (err: any) {
+      Alert.alert(
+        "Registration Failed",
+        err.message
+      );
     } finally {
       setLoading(false);
     }
   }
 
   return {
-    registerUser,
     loading,
+    registerUser,
   };
 }

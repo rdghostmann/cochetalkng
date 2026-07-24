@@ -1,3 +1,4 @@
+// src/app/(auth)/components/AuthGuard.tsx
 import { Redirect } from "expo-router";
 
 import { useAuthStore } from "@/store/auth.store";

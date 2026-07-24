@@ -1,83 +1,105 @@
+// src/app/(auth)/login.tsx
+
 import { Link } from "expo-router";
-import { View, Text, TextInput, Pressable } from "react-native";
+import { View } from "react-native";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { LoginSchema, LoginFormData } from "@/features/auth/validation/auth.schema";
+import {
+    LoginFormData,
+    LoginSchema,
+} from "@/features/auth/validation/auth.schema";
+
 import { useLogin } from "@/hooks/useLogin";
+import {
+    AuthHeader, AuthInput,
+    PasswordInput,
+    PrimaryButton,
+    AuthFooter,
+    AuthDivider,
+    SocialLogin,
+} from "./components";
+
+
 
 export default function LoginScreen() {
     const { login, loading } = useLogin();
 
     const {
-        register,
         setValue,
         handleSubmit,
         formState: { errors },
     } = useForm<LoginFormData>({
         resolver: zodResolver(LoginSchema),
+        defaultValues: {
+            email: "",
+            password: "",
+        },
     });
 
-    const onSubmit = (data: LoginFormData) => {
+    function onSubmit(data: LoginFormData) {
         login(data);
-    };
+    }
+
 
     return (
-        <View className="flex-1 bg-white justify-center px-6">
+        <View className="flex-1 justify-center bg-background px-6">
 
-            <Text className="text-3xl font-bold mb-2">
-                Welcome Back 👋
-            </Text>
+            <AuthHeader
+                title="Welcome Back 👋"
+                subtitle="Sign in to continue your automotive journey."
+            />
 
-            <Text className="text-gray-500 mb-8">
-                Sign in to continue.
-            </Text>
-
-            <TextInput
-                placeholder="Email"
+            <AuthInput
+                label="Email Address"
+                placeholder="Enter your email"
                 keyboardType="email-address"
                 autoCapitalize="none"
-                className="border rounded-xl p-4 mb-2"
-                onChangeText={(text) => setValue("email", text)}
+                autoCorrect={false}
+                error={errors.email?.message}
+                onChangeText={(text) =>
+                    setValue("email", text, {
+                        shouldValidate: true,
+                    })
+                }
             />
 
-            <Text className="text-red-500 mb-4">
-                {errors.email?.message}
-            </Text>
-
-            <TextInput
-                placeholder="Password"
-                secureTextEntry
-                className="border rounded-xl p-4 mb-2"
-                onChangeText={(text) => setValue("password", text)}
+            <PasswordInput
+                label="Password"
+                placeholder="Enter your password"
+                error={errors.password?.message}
+                onChangeText={(text) =>
+                    setValue("password", text, {
+                        shouldValidate: true,
+                    })
+                }
             />
-
-            <Text className="text-red-500 mb-6">
-                {errors.password?.message}
-            </Text>
-
-            <Pressable
-                onPress={handleSubmit(onSubmit)}
-                className="bg-blue-600 rounded-xl p-4"
-            >
-                <Text className="text-center text-white font-semibold">
-                    {loading ? "Signing In..." : "Login"}
-                </Text>
-            </Pressable>
 
             <Link
                 href="/(auth)/forgot-password"
-                className="mt-6 text-center text-blue-600"
+                className="mt-3 self-end text-primary font-medium"
             >
                 Forgot Password?
             </Link>
 
-            <Link
+            <PrimaryButton
+                title="Sign In"
+                loading={loading}
+                onPress={handleSubmit(onSubmit)}
+                className="mt-8"
+            />
+
+            <AuthDivider text="or continue with" />
+
+            <SocialLogin
+                loading={loading}
+            />
+            
+            <AuthFooter
+                text="Don't have an account?"
+                linkText="Register"
                 href="/(auth)/register"
-                className="mt-3 text-center text-gray-700"
-            >
-                Don't have an account? Register
-            </Link>
+            />
 
         </View>
     );

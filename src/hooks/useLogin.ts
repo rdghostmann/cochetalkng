@@ -1,28 +1,45 @@
-import { AuthService } from "@/features/auth/services/auth.service";
-import { LoginFormData } from "@/features/auth/validation/auth.schema";
+// .src/hooks/useLogin.ts
+import { Alert } from "react-native";
+import { router } from "expo-router";
 import { useState } from "react";
 
-
+import { AuthService } from "@/features/auth/services/auth.service";
+import { LoginFormData } from "@/features/auth/validation/auth.schema";
 
 export function useLogin() {
   const [loading, setLoading] = useState(false);
 
-  async function login(data: LoginFormData) {
+  async function login(
+    data: LoginFormData
+  ) {
     try {
       setLoading(true);
 
-      const { error } = await AuthService.signIn(
+      const {
+        data: result,
+        error,
+      } = await AuthService.signIn(
         data.email,
         data.password
       );
 
-      if (error) {
-        throw error;
+      if (error) throw error;
+
+      if (!result.user?.email_confirmed_at) {
+        Alert.alert(
+          "Verify Email",
+          "Please verify your email before logging in."
+        );
+
+        return;
       }
 
-      console.log("Login successful");
-    } catch (error: any) {
-      console.error(error.message);
+      router.replace("/(protected)");
+    } catch (err: any) {
+      Alert.alert(
+        "Login Failed",
+        err.message
+      );
     } finally {
       setLoading(false);
     }
