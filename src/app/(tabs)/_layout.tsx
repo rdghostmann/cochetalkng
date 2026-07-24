@@ -60,6 +60,21 @@ export default function TabsLayout() {
           ),
         }}
       />
+         <Tabs.Screen
+        name="messages"
+        options={{
+          title: "Messages",
+
+          tabBarIcon: ({ color, size }) => (
+            <Feather
+              name="message-circle"
+              color={color}
+              size={size}
+            />
+            
+          ),
+        }}
+      />
 
       <Tabs.Screen
         name="marketplace"
@@ -81,21 +96,7 @@ export default function TabsLayout() {
         }}
       />
 
-      <Tabs.Screen
-        name="messages"
-        options={{
-          title: "Messages",
-
-          tabBarIcon: ({ color, size }) => (
-            <Feather
-              name="message-circle"
-              color={color}
-              size={size}
-            />
-          ),
-        }}
-      />
-
+   
       <Tabs.Screen
         name="notifications"
         options={{

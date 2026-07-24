@@ -3,14 +3,11 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
-import type {
-  Answer,
-  ForumFilter,
-  ForumQuestion,
-  ForumUser,
-  QuestionPayload,
-} from "@/types/forum.types";
+
+
 import { extractQuestionTags, filterQuestions } from "@/utils/forum";
+import { SEED_ANSWERS, SEED_QUESTIONS } from "../../data/mockdata";
+import { QuestionPayload, ForumAnswer, ForumFilter, ForumQuestion, UserProfile, UserSummary } from "@/types/types";
 
 
 interface CMSConfig {
@@ -28,9 +25,9 @@ interface ForumStore {
 
   questions: ForumQuestion[];
 
-  answers: Answer[];
+  answers: ForumAnswer[];
 
-  currentUser: ForumUser | null;
+  currentUser: UserSummary | null;
 
   cmsConfig: CMSConfig;
 
@@ -91,11 +88,11 @@ interface ForumStore {
   ) => void;
 
   setAnswers: (
-    answers: Answer[]
+    answers: ForumAnswer[]
   ) => void;
 
   setCurrentUser: (
-    user: ForumUser | null
+    user: UserProfile | null
   ) => void;
 
   setCMSConfig: (
@@ -107,7 +104,7 @@ interface ForumStore {
   ) => void;
 
   addAnswer: (
-    answer: Answer
+    answer: ForumAnswer
   ) => void;
 
   updateQuestion: (
@@ -140,10 +137,12 @@ const defaultCMS: CMSConfig = {
   announcementText: "",
 };
 
-const initialState = {
-  questions: [],
+const initialQuestions = SEED_QUESTIONS;
+const initialAnswers = SEED_ANSWERS;
 
-  answers: [],
+const initialState = {
+  questions: initialQuestions,
+  answers: initialAnswers,
 
   loading: false,
 
@@ -161,9 +160,15 @@ const initialState = {
 
   showAskModal: false,
 
-  filteredQuestions: [],
+  filteredQuestions: filterQuestions({
+    questions: initialQuestions,
+    answers: initialAnswers,
+    filter: "Latest",
+    tag: "",
+    search: "",
+  }),
 
-  tags: [],
+  tags: extractQuestionTags(initialQuestions),
 };
 
 export const useForumStore =
@@ -259,59 +264,55 @@ export const useForumStore =
             cmsConfig,
           }),
 
-        askQuestion: (
-          payload
-        ) => {
-          const question: ForumQuestion =
-            {
-              id:
-                crypto.randomUUID(),
+        askQuestion: (payload) => {
+          const user = get().currentUser;
 
-              userId:
-                payload.userId,
+          if (!user) return;
 
-              title:
-                payload.title,
+          const question: ForumQuestion = {
+            id: crypto.randomUUID(),
 
-              description:
-                payload.description,
+            userId: user.id,
 
-              tags: payload.tags,
+            title: payload.title,
 
-              yrModel:
-                payload.yrModel,
+            description: payload.description,
 
-              vehicleType:
-                payload.vehicleType,
+            authorEmail: user.email,
 
-              isPrivateEcosystem:
-                payload.isPrivateEcosystem,
+            authorName: user.full_name,
 
-              hearConcern:
-                payload.hearConcern,
+            authorAvatar: user.avatar_url ?? "",
 
-              seeConcern:
-                payload.seeConcern,
+            authorRole: user.role,
 
-              smellConcern:
-                payload.smellConcern,
+            authorVerified: user.isVerified,
 
-              feelConcern:
-                payload.feelConcern,
+            vehicleInfo:
+              payload.vehicleInfo ?? {
+                make: "",
+                model: "",
+                year: new Date().getFullYear(),
+              },
+            tags:
+              payload.tags.length > 0
+                ? payload.tags
+                : ["General"],
 
-              notStarting:
-                payload.notStarting,
+            isPrivateEcosystem:
+              payload.isPrivateEcosystem,
 
-              performanceConcern:
-                payload.performanceConcern,
+            upvotes: 0,
 
-              dashboardWarningLights:
-                payload.dashboardWarningLights,
+            upvotedBy: [],
 
-              timestamp:
-                Date.now(),
-            };
+            answersCount: 0,
 
+            createdAt:
+              new Date().toISOString(),
+
+            views: 0,
+          };
           set((state) => ({
             questions: [
               question,
@@ -346,11 +347,11 @@ export const useForumStore =
               state.questions.map(
                 (question) =>
                   question.id ===
-                  id
+                    id
                     ? {
-                        ...question,
-                        ...data,
-                      }
+                      ...question,
+                      ...data,
+                    }
                     : question
               ),
           }));

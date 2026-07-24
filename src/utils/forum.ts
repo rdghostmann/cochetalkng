@@ -1,10 +1,8 @@
-// src/utils/forum.ts
-
 import type {
-  Answer,
+  ForumAnswer,
   ForumFilter,
   ForumQuestion,
-} from "@/types/forum.types";
+} from "@/types/types";
 
 /* -------------------------------------------------------------------------- */
 /*                                  Sorting                                   */
@@ -14,13 +12,15 @@ export function sortLatest(
   questions: ForumQuestion[]
 ): ForumQuestion[] {
   return [...questions].sort(
-    (a, b) => b.timestamp - a.timestamp
+    (a, b) =>
+      new Date(b.createdAt).getTime() -
+      new Date(a.createdAt).getTime()
   );
 }
 
 export function sortMostAnswered(
   questions: ForumQuestion[],
-  answers: Answer[]
+  answers: ForumAnswer[]
 ): ForumQuestion[] {
   return [...questions].sort(
     (a, b) =>
@@ -31,7 +31,7 @@ export function sortMostAnswered(
 
 export function getUnansweredQuestions(
   questions: ForumQuestion[],
-  answers: Answer[]
+  answers: ForumAnswer[]
 ): ForumQuestion[] {
   return questions.filter(
     (question) =>
@@ -56,28 +56,37 @@ export function searchQuestions(
 
   const search = keyword.toLowerCase();
 
-  return questions.filter(
-    (question) =>
+  return questions.filter((question) => {
+    const vehicle = question.vehicleInfo;
+
+    return (
       question.title
         .toLowerCase()
         .includes(search) ||
-
       question.description
         .toLowerCase()
         .includes(search) ||
-
-      question.tags
-        .toLowerCase()
-        .includes(search) ||
-
-      question.yrModel
+      question.tags.some((tag) =>
+        tag.toLowerCase().includes(search)
+      ) ||
+      vehicle?.make
         ?.toLowerCase()
+        .includes(search) ||
+      vehicle?.model
+        ?.toLowerCase()
+        .includes(search) ||
+      vehicle?.type
+        ?.toLowerCase()
+        .includes(search) ||
+      vehicle?.year
+        ?.toString()
         .includes(search)
-  );
+    );
+  });
 }
 
 /* -------------------------------------------------------------------------- */
-/*                                  Tags                                      */
+/*                                   Tags                                     */
 /* -------------------------------------------------------------------------- */
 
 export function filterByTag(
@@ -89,10 +98,7 @@ export function filterByTag(
   }
 
   return questions.filter((question) =>
-    question.tags
-      .split(",")
-      .map((item) => item.trim())
-      .includes(tag)
+    question.tags.includes(tag)
   );
 }
 
@@ -102,22 +108,20 @@ export function extractTags(
   const tagSet = new Set<string>();
 
   questions.forEach((question) => {
-    question.tags
-      .split(",")
-      .forEach((tag) => {
-        const value = tag.trim();
+    question.tags.forEach((tag) => {
+      const value = tag.trim();
 
-        if (value) {
-          tagSet.add(value);
-        }
-      });
+      if (value) {
+        tagSet.add(value);
+      }
+    });
   });
 
-  return Array.from(tagSet).sort();
+  return [...tagSet].sort();
 }
 
 /**
- * Alias used by forumStore
+ * Alias used by Forum Store
  */
 export const extractQuestionTags =
   extractTags;
@@ -128,13 +132,9 @@ export const extractQuestionTags =
 
 interface FilterQuestionOptions {
   questions: ForumQuestion[];
-
-  answers: Answer[];
-
+  answers: ForumAnswer[];
   filter: ForumFilter;
-
   tag?: string;
-
   search?: string;
 }
 
@@ -182,7 +182,7 @@ export function filterQuestions({
 
 export function getAnswerCount(
   questionId: string,
-  answers: Answer[]
+  answers: ForumAnswer[]
 ): number {
   return answers.filter(
     (answer) =>
@@ -203,10 +203,12 @@ export function hasAcceptedAnswer(
 /* -------------------------------------------------------------------------- */
 
 export function formatRelativeTime(
-  timestamp: number
+  createdAt: string
 ): string {
   const seconds = Math.floor(
-    (Date.now() - timestamp) / 1000
+    (Date.now() -
+      new Date(createdAt).getTime()) /
+      1000
   );
 
   if (seconds < 60) {

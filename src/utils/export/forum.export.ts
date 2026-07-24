@@ -1,9 +1,9 @@
 import {
-  Answer,
+  ForumAnswer,
   ForumQuestion,
   MarketplaceListing,
-} from "@/types/forum.types";
-import { ProviderRating } from "@/providers/ProviderRating.types";
+  Rating,
+} from "@/types/types";
 
 import { buildCsv } from "./csv";
 import { downloadCsv } from "./download";
@@ -14,13 +14,13 @@ function datestamp() {
 
 export async function exportActivitiesReport(
   questions: ForumQuestion[],
-  answers: Answer[],
+  answers: ForumAnswer[],
   listings: MarketplaceListing[],
-  ratings: ProviderRating[],
+  ratings: Rating[],
 ): Promise<void> {
   /**
    * ---------------------------------------
-   * Build Answer Count Lookup
+   * Answer Count Lookup
    * ---------------------------------------
    */
 
@@ -43,7 +43,7 @@ export async function exportActivitiesReport(
     "Question ID",
     "Title",
     "Vehicle Type",
-    "Year / Model",
+    "Vehicle",
     "Tags",
     "Visibility",
     "Answers",
@@ -53,18 +53,20 @@ export async function exportActivitiesReport(
   const questionRows = questions.map((question) => [
     question.id,
     question.title,
-    question.vehicleType,
-    question.yrModel ?? "",
-    question.tags,
+    question.vehicleInfo?.type ?? "",
+    [
+      question.vehicleInfo?.year,
+      question.vehicleInfo?.make,
+      question.vehicleInfo?.model,
+    ]
+      .filter(Boolean)
+      .join(" "),
+    question.tags.join(", "),
     question.isPrivateEcosystem
       ? "Private"
       : "Public",
-    String(
-      answerCount.get(question.id) ?? 0,
-    ),
-    new Date(
-      question.timestamp,
-    ).toLocaleDateString(),
+    String(answerCount.get(question.id) ?? 0),
+    new Date(question.createdAt).toLocaleDateString(),
   ]);
 
   /**
@@ -74,10 +76,7 @@ export async function exportActivitiesReport(
    */
 
   const questionLookup = new Map(
-    questions.map((question) => [
-      question.id,
-      question.title,
-    ]),
+    questions.map((q) => [q.id, q]),
   );
 
   const answerHeaders = [
@@ -90,25 +89,29 @@ export async function exportActivitiesReport(
     "Created",
   ];
 
-  const answerRows = answers.map((answer) => [
-    answer.id,
-    questionLookup.get(
+  const answerRows = answers.map((answer) => {
+    const question = questionLookup.get(
       answer.questionId,
-    ) ?? "",
-    answer.userName,
-    answer.userRole,
-    answer.isAccepted
-      ? "Yes"
-      : "No",
-    String(answer.upvotes),
-    new Date(
-      answer.timestamp,
-    ).toLocaleDateString(),
-  ]);
+    );
+
+    return [
+      answer.id,
+      question?.title ?? "",
+      answer.authorName,
+      answer.authorRole,
+      question?.acceptedAnswerId === answer.id
+        ? "Yes"
+        : "No",
+      String(answer.upvotes),
+      new Date(
+        answer.createdAt,
+      ).toLocaleDateString(),
+    ];
+  });
 
   /**
    * ---------------------------------------
-   * Listings
+   * Marketplace
    * ---------------------------------------
    */
 
@@ -127,7 +130,7 @@ export async function exportActivitiesReport(
     (listing) => [
       listing.id,
       listing.title,
-      listing.userName,
+      listing.sellerName,
       listing.category,
       listing.price,
       listing.location,
@@ -151,55 +154,43 @@ export async function exportActivitiesReport(
     "Provider",
     "User",
     "Rating",
-    "Review",
+    "Feedback",
   ];
 
   const ratingRows = ratings.map(
     (rating) => [
       rating.id,
       rating.providerId,
-      rating.userId,
-      rating.rating,
-      rating.review ?? "",
+      rating.raterName,
+      rating.ratingValue,
+      rating.feedback,
     ],
   );
 
   /**
    * ---------------------------------------
-   * Merge Sections
+   * CSV
    * ---------------------------------------
    */
 
   const csv = [
     "=== QUESTIONS ===",
-    buildCsv(
-      questionHeaders,
-      questionRows,
-    ),
+    buildCsv(questionHeaders, questionRows),
 
     "",
 
     "=== ANSWERS ===",
-    buildCsv(
-      answerHeaders,
-      answerRows,
-    ),
+    buildCsv(answerHeaders, answerRows),
 
     "",
 
     "=== MARKETPLACE ===",
-    buildCsv(
-      listingHeaders,
-      listingRows,
-    ),
+    buildCsv(listingHeaders, listingRows),
 
     "",
 
-    "=== PROVIDER RATINGS ===",
-    buildCsv(
-      ratingHeaders,
-      ratingRows,
-    ),
+    "=== RATINGS ===",
+    buildCsv(ratingHeaders, ratingRows),
   ].join("\n");
 
   await downloadCsv(

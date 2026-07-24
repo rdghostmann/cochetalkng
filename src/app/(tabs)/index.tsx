@@ -12,6 +12,7 @@ import { SponsoredBanner } from "@/components/forum/SponsoredBanner";
 import { FloatingAskButton } from "@/components/forum/FloatingAskButton";
 import { useForumStore } from "@/store/forum.store";
 import { useMarketplaceStore } from "@/store/marketplace.store";
+import { ForumHero } from "@/components/forum/ForumHero";
 
 export default function ForumScreen() {
     const {
@@ -55,6 +56,7 @@ export default function ForumScreen() {
             edges={["top"]}
             className="flex-1 bg-background"
         >
+            
             <ForumHeader
                 currentUser={currentUser}
                 logoUri={cmsConfig.forumLogoUri}
@@ -62,12 +64,19 @@ export default function ForumScreen() {
                 onToggleSearch={toggleSearch}
             />
 
-            {showSearch && (
-                <SearchBar
-                    value={searchQuery}
-                    onChangeText={setSearchQuery}
-                />
-            )}
+            {/* <ForumHero
+                onPress={openAskModal}
+            /> */}
+
+            {/* {showSearch && ( */}
+            <SearchBar
+                value={searchQuery}
+                onChangeText={setSearchQuery}
+            />
+            {/* )} */}
+
+
+
 
             <AnnouncementBanner />
 

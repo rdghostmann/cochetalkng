@@ -10,7 +10,7 @@ interface ForumHeaderProps {
 
   currentUser?: {
     id: string;
-    name: string;
+    full_name: string;
   } | null;
 
   showSearch: boolean;
@@ -19,7 +19,7 @@ interface ForumHeaderProps {
 }
 
 export function ForumHeader({
-  title = "CocheTalk",
+  title = "CocheTalkNG",
   logoUri,
   currentUser,
   showSearch,
@@ -73,7 +73,7 @@ export function ForumHeader({
             className="h-9 w-9 items-center justify-center rounded-full bg-primary/20"
           >
             <Text className="font-bold text-primary">
-              {currentUser.name.charAt(0).toUpperCase()}
+              {currentUser.full_name.charAt(0).toUpperCase()}
             </Text>
           </Pressable>
         )}

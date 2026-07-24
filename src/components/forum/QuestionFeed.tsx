@@ -7,13 +7,13 @@ import { QuestionEmptyState } from "./QuestionEmptyState";
 
 import type {
   ForumQuestion,
-  Answer,
-} from "@/types/forum.types";
+  ForumAnswer,
+} from "@/types/types";
 
 interface QuestionFeedProps {
   questions: ForumQuestion[];
 
-  answers: Answer[];
+  answers: ForumAnswer[];
 }
 
 export function QuestionFeed({
@@ -25,7 +25,7 @@ export function QuestionFeed({
       data={questions}
       keyExtractor={(item) => item.id}
       showsVerticalScrollIndicator={false}
-      contentContainerClassName="px-4 pt-3 pb-36"
+      contentContainerClassName="py-4"
       ListEmptyComponent={<QuestionEmptyState />}
       renderItem={({ item }) => (
         <QuestionCard

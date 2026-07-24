@@ -1,8 +1,6 @@
-// hooks/useForumFilters.ts
-
 import { useMemo, useState } from "react";
 
-import type { ForumQuestion } from "@/types/forum";
+import type { ForumQuestion } from "@/types/types";
 
 export const FILTER_OPTIONS = [
   "Latest",
@@ -35,78 +33,63 @@ export function useForumFilters({
     useState("");
 
   /**
-   * -----------------------------------
-   * Extract Tags
-   * -----------------------------------
+   * Tags
    */
 
   const tags = useMemo(() => {
-    const tagSet =
-      new Set<string>();
+    const tagSet = new Set<string>();
 
-    questions.forEach(
-      (question) => {
-        question.tags
-          ?.split(",")
-          .map((tag) =>
-            tag.trim()
-          )
-          .filter(Boolean)
-          .forEach((tag) =>
-            tagSet.add(tag)
-          );
-      }
-    );
+    questions.forEach((question) => {
+      question.tags.forEach((tag) =>
+        tagSet.add(tag)
+      );
+    });
 
-    return Array.from(tagSet).sort();
+    return [...tagSet].sort();
   }, [questions]);
 
   /**
-   * -----------------------------------
-   * Filter Questions
-   * -----------------------------------
+   * Filter
    */
 
   const filteredQuestions =
     useMemo(() => {
-      let result = [
-        ...questions,
-      ];
+      let result = [...questions];
 
       /**
        * Search
        */
 
-      if (
-        searchQuery.trim()
-      ) {
+      if (searchQuery.trim()) {
         const keyword =
           searchQuery.toLowerCase();
 
-        result =
-          result.filter(
-            (question) =>
-              question.title
+        result = result.filter(
+          (question) =>
+            question.title
+              .toLowerCase()
+              .includes(keyword) ||
+            question.description
+              .toLowerCase()
+              .includes(keyword) ||
+            question.tags.some((tag) =>
+              tag
                 .toLowerCase()
-                .includes(
-                  keyword
-                ) ||
-              question.description
-                .toLowerCase()
-                .includes(
-                  keyword
-                ) ||
-              question.tags
-                ?.toLowerCase()
-                .includes(
-                  keyword
-                ) ||
-              question.yrModel
-                ?.toLowerCase()
-                .includes(
-                  keyword
-                )
-          );
+                .includes(keyword)
+            ) ||
+            question.vehicleInfo?.make
+              ?.toLowerCase()
+              .includes(keyword) ||
+            question.vehicleInfo?.model
+              ?.toLowerCase()
+              .includes(keyword) ||
+            question.vehicleInfo?.type
+              ?.toLowerCase()
+              .includes(keyword) ||
+            question.vehicleInfo?.year
+              ?.toString()
+              .includes(keyword)
+        );
       }
 
       /**
@@ -114,62 +97,38 @@ export function useForumFilters({
        */
 
       if (activeTag) {
-        result =
-          result.filter(
-            (question) =>
-              question.tags
-                ?.split(",")
-                .map((t) =>
-                  t.trim()
-                )
-                .includes(
-                  activeTag
-                )
-          );
+        result = result.filter((question) =>
+          question.tags.includes(activeTag)
+        );
       }
 
       /**
-       * Filter
+       * Sort / Filter
        */
 
-      switch (
-        activeFilter
-      ) {
+      switch (activeFilter) {
         case "Most Answered":
-          return result.sort(
-            (a, b) => {
-              const aCount =
-                answers.filter(
-                  (
-                    answer
-                  ) =>
-                    answer.questionId ===
-                    a.id
-                ).length;
+          return result.sort((a, b) => {
+            const aCount =
+              answers.filter(
+                (answer) =>
+                  answer.questionId === a.id
+              ).length;
 
-              const bCount =
-                answers.filter(
-                  (
-                    answer
-                  ) =>
-                    answer.questionId ===
-                    b.id
-                ).length;
+            const bCount =
+              answers.filter(
+                (answer) =>
+                  answer.questionId === b.id
+              ).length;
 
-              return (
-                bCount -
-                aCount
-              );
-            }
-          );
+            return bCount - aCount;
+          });
 
         case "Unanswered":
           return result.filter(
             (question) =>
               !answers.some(
-                (
-                  answer
-                ) =>
+                (answer) =>
                   answer.questionId ===
                   question.id
               )
@@ -179,8 +138,12 @@ export function useForumFilters({
         default:
           return result.sort(
             (a, b) =>
-              b.timestamp -
-              a.timestamp
+              new Date(
+                b.createdAt
+              ).getTime() -
+              new Date(
+                a.createdAt
+              ).getTime()
           );
       }
     }, [
@@ -191,60 +154,31 @@ export function useForumFilters({
       activeTag,
     ]);
 
-  /**
-   * -----------------------------------
-   * Helpers
-   * -----------------------------------
-   */
+  const clearSearch = () =>
+    setSearchQuery("");
 
-  const clearSearch =
-    () => {
-      setSearchQuery("");
-    };
+  const clearTag = () =>
+    setActiveTag("");
 
-  const clearTag =
-    () => {
-      setActiveTag("");
-    };
-
-  const resetFilters =
-    () => {
-      setSearchQuery("");
-      setActiveTag("");
-      setActiveFilter(
-        "Latest"
-      );
-    };
+  const resetFilters = () => {
+    setSearchQuery("");
+    setActiveTag("");
+    setActiveFilter("Latest");
+  };
 
   return {
-    /**
-     * State
-     */
-
     searchQuery,
-
     activeFilter,
-
     activeTag,
-
     tags,
-
     filteredQuestions,
 
-    /**
-     * Actions
-     */
-
     setSearchQuery,
-
     setActiveFilter,
-
     setActiveTag,
 
     clearSearch,
-
     clearTag,
-
     resetFilters,
   };
 }

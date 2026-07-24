@@ -1,6 +1,6 @@
 // components/pro/AskQuestionModal.tsx
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
     Modal,
     Pressable,
