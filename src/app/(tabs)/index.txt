@@ -1,0 +1,100 @@
+// .src/app/(tabs)/index.tsx
+import { SafeAreaView } from "react-native-safe-area-context";
+
+import { ForumHeader } from "@/components/forum/ForumHeader";
+import { FilterChips } from "@/components/forum/FilterChips";
+import { AskQuestionModal } from "@/components/forum/AskQuestionModal";
+import { QuestionFeed } from "@/components/forum/QuestionFeed";
+import { TagFilter } from "@/components/forum/TagFilter";
+import { AnnouncementBanner } from "@/components/forum/AnnoucementBanner";
+import { SearchBar } from "@/components/forum/SearchBar";
+import { SponsoredBanner } from "@/components/forum/SponsoredBanner";
+import { FloatingAskButton } from "@/components/forum/FloatingAskButton";
+import { useForumStore } from "@/store/forum.store";
+import { useMarketplaceStore } from "@/store/marketplace.store";
+import { ForumHero } from "@/components/forum/ForumHero";
+import { FlatList } from "react-native";
+import { QuestionCard } from "@/components/ui/QuestionCard";
+
+export default function ForumScreen() {
+    const {
+        loading,
+
+        showSearch,
+        toggleSearch,
+
+        searchQuery,
+        setSearchQuery,
+
+        activeFilter,
+        setActiveFilter,
+
+        activeTag,
+        setActiveTag,
+
+        showAskModal,
+        openAskModal,
+        closeAskModal,
+
+        filteredQuestions,
+        answers,
+        tags,
+
+        askQuestion,
+
+        cmsConfig,
+
+        currentUser,
+    } = useForumStore();
+
+    const featuredAds = useMarketplaceStore((state) => state.featuredAds);
+
+    if (loading) {
+        return null;
+    }
+
+    return (
+        <FlatList
+            data={filteredQuestions}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+                <QuestionCard
+                    question={item}
+                    answerCount={
+                        answers.filter(
+                            (a) => a.questionId === item.id
+                        ).length
+                    }
+                />
+            )}
+            ListHeaderComponent={
+                <>
+                    <ForumHero onPress={openAskModal} />
+
+                    <SearchBar
+                        value={searchQuery}
+                        onChangeText={setSearchQuery}
+                    />
+
+                    <FilterChips
+                        active={activeFilter}
+                        onChange={setActiveFilter}
+                    />
+
+                    <TagFilter
+                        tags={tags}
+                        active={activeTag}
+                        onChange={setActiveTag}
+                    />
+
+                    <SponsoredBanner
+                        ads={featuredAds}
+                    />
+                </>
+            }
+            contentContainerStyle={{
+                paddingBottom: 120,
+            }}
+        />
+    );
+}

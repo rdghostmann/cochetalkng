@@ -22,11 +22,11 @@ export default function TabsLayout() {
     clinicVisible,
   } = useAppStore();
 
- const role =
-  user?.app_metadata?.role ??
-  user?.user_metadata?.role ??
-  "Car Owner";
-  
+  const role =
+    user?.app_metadata?.role ??
+    user?.user_metadata?.role ??
+    "Car Owner";
+
   const isAdmin =
     role === "Admin";
 
@@ -60,9 +60,12 @@ export default function TabsLayout() {
           ),
         }}
       />
-         <Tabs.Screen
+      <Tabs.Screen
         name="messages"
         options={{
+
+          href: null,
+
           title: "Messages",
 
           tabBarIcon: ({ color, size }) => (
@@ -71,7 +74,7 @@ export default function TabsLayout() {
               color={color}
               size={size}
             />
-            
+
           ),
         }}
       />
@@ -96,10 +99,12 @@ export default function TabsLayout() {
         }}
       />
 
-   
+
       <Tabs.Screen
         name="notifications"
         options={{
+
+          href: null,
           title: "Alerts",
 
           tabBarBadge:

@@ -1,69 +1,93 @@
 /** @type {import('tailwindcss').Config} */
+
 module.exports = {
-  // NOTE: Update this to include the paths to all files that contain Nativewind classes.
-  content: ["./src/app/**/*.{js,jsx,ts,tsx}", "./components/**/*.{js,jsx,ts,tsx}", "./app/**/*.{js,jsx,ts,tsx}"],
+  content: [
+    "./App.{js,jsx,ts,tsx}",
+    "./src/**/*.{js,jsx,ts,tsx}",
+    "./app/**/*.{js,jsx,ts,tsx}",
+  ],
+
   presets: [require("nativewind/preset")],
+
   theme: {
-  extend: {
-    // colors: {
-    //   primary: "#00EBBA",
-    //   secondary: "#00BFA5",
-    //   accent: "#50FFDC",
+    extend: {
+      colors: {
+        /* Brand */
 
-    //   background: "#F7FAFA",
-    //   foreground: "#1C1B1F",
+        primary: "#00EBBA",
+        "primary-hover": "#00D8AB",
+        "primary-active": "#00C39A",
+        "primary-foreground": "#03120E",
 
-    //   surface: "#FFFFFF",
-    //   card: "#FFFFFF",
+        secondary: "#13C6B3",
+        "secondary-foreground": "#05231C",
 
-    //   muted: "#EEF4F3",
+        accent: "#65F8DA",
+        "accent-foreground": "#03261D",
 
-    //   border: "#DCE8E5",
+        /* Background */
 
-    //   success: "#10B981",
-    //   warning: "#F59E0B",
-    //   destructive: "#EF4444",
+        background: "#F6F8F9",
+        foreground: "#101828",
 
-    //   verified: "#00EBBA",
-    //   pro: "#A78BFA",
-    // },
-     colors: {
-      primary: "var(--color-primary)",
-      "primary-foreground": "var(--color-primary-foreground)",
+        card: "#FFFFFF",
+        "card-foreground": "#111827",
 
-      background: "var(--color-background)",
-      foreground: "var(--color-foreground)",
+        surface: "#FFFFFF",
+        "surface-secondary": "#F8FAFB",
+        "surface-tertiary": "#EEF2F3",
 
-      card: "var(--color-card)",
-      "card-foreground": "var(--color-card-foreground)",
+        /* Dark */
 
-      border: "var(--color-border)",
+        dark: "#0B1117",
+        "dark-secondary": "#131B23",
+        "dark-border": "#25303B",
 
-      muted: "var(--color-muted)",
-      "muted-foreground": "var(--color-muted-foreground)",
+        /* Border */
 
-      success: "var(--color-success)",
-      warning: "var(--color-warning)",
-      destructive: "var(--color-destructive)",
+        border: "#E4EAEC",
+        input: "#D8E2E5",
 
-      verified: "var(--color-verified)",
-      "pro-circle": "var(--color-pro-circle)",
-    },
+        /* Text */
 
-    borderRadius: {
-      DEFAULT: "10px",
-      lg: "10px",
-      xl: "14px",
-      "2xl": "18px",
-    },
+        muted: "#F1F5F6",
+        "muted-foreground": "#667085",
 
-    fontFamily: {
-      display: ["Spline Sans", "Inter", "sans-serif"],
-      rounded: ["SF Pro Rounded", "sans-serif"],
-      mono: ["SFMono-Regular", "monospace"],
-      serif: ["Georgia", "serif"],
+        /* Status */
+
+        success: "#16A34A",
+        warning: "#F59E0B",
+        destructive: "#EF4444",
+
+        /* Platform */
+
+        verified: "#00EBBA",
+        "pro-circle": "#8B5CF6",
+        premium: "#FBBF24",
+
+        /* Features */
+
+        marketplace: "#10B981",
+        ai: "#3B82F6",
+      },
+
+      borderRadius: {
+        sm: "8px",
+        DEFAULT: "12px",
+        lg: "16px",
+        xl: "20px",
+        "2xl": "24px",
+        "3xl": "30px",
+      },
+
+      fontFamily: {
+        display: ["Spline Sans"],
+        rounded: ["SF Pro Rounded"],
+        mono: ["SFMono-Regular"],
+        serif: ["Georgia"],
+      },
     },
   },
-},
+
   plugins: [],
-}
+};

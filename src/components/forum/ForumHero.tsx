@@ -15,7 +15,7 @@ export function ForumHero({
     onPress,
 }: Props) {
     return (
-        <View className="border pb-4 mx-4 mt-3 overflow-hidden rounded-2xl bg-black px-6 py-7">
+        <View className="pb-4 mx-4 mt-3 overflow-hidden rounded-2xl bg-primary/50 px-6 py-7">
 
             {/* Decorative Background */}
 
@@ -25,7 +25,7 @@ export function ForumHero({
 
                 {/* Badge */}
 
-                <View className="border mb-4 self-start flex-row items-center rounded-full px-3 py-1">
+                <View className="mb-4 self-start flex-row items-center rounded-full px-3 py-1">
 
                     <Feather
                         name="help-circle"
@@ -33,8 +33,7 @@ export function ForumHero({
                         color="#34D399"
                     />
 
-                    <Text className="ml-2 text-[5px] text-white">
-                    {/* <Text className="ml-2 text-[9px] text-[#34D399]"> */}
+                    <Text className="ml-2 text-sm text-[#34D399]">
                         Vehicle Diagnostics & Aftersales Community
                     </Text>
 
