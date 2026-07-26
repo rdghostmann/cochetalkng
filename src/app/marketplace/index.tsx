@@ -10,7 +10,9 @@ export default function MarketplaceScreen() {
       className="flex-1 bg-background"
     >
       <View className="flex-1">
-        <Text className="text-primary">Marketplac Coming Soon</Text>
+        <MarketplaceHero 
+        onCreateListing={() => {}}
+        />
         
       
 

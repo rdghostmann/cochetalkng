@@ -1,3 +1,4 @@
+// AuthHeader.tsx
 import { Image, Text, View } from "react-native";
 
 interface AuthHeaderProps {
@@ -13,8 +14,8 @@ export function AuthHeader({
     <View className="items-center mb-10">
 
       <Image
-        source={require("@/assets/images/icon.png")}
-        className="hidden h-24 w-24 rounded-3xl"
+        source={require("../../../../assets/images/icon.png")}
+        className="h-24 w-24 rounded-3xl"
         resizeMode="contain"
       />
 

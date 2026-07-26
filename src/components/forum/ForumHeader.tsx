@@ -26,7 +26,7 @@ interface ForumHeaderProps {
 }
 
 export function ForumHeader({
-  title = "CocheTalkNG",
+  title,
   logoUri,
   currentUser,
   showSearch,
@@ -39,7 +39,8 @@ export function ForumHeader({
       ?.toUpperCase() ?? "U";
 
   return (
-    <View className="border-b border-border bg-background">
+    <View className="border-b border-border bg-dark">
+    {/* <View className="border-b border-border bg-background"> */}
 
       <View className="flex-row items-center justify-between px-4 py-3">
 
@@ -62,7 +63,7 @@ export function ForumHeader({
           ) : (
             <View className="h-10 w-10 items-center justify-center rounded-xl bg-primary">
 
-              <Text className="text-lg font-extrabold text-black">
+              <Text className="text-lg font-extrabold text-white">
                 C
               </Text>
 
@@ -71,12 +72,12 @@ export function ForumHeader({
 
           <View className="ml-3">
 
-            <Text className="text-lg font-extrabold text-foreground">
-              {title}
+            <Text className="text-lg font-extrabold text-background">
+              CocheTalk<Text className="text-primary">NG</Text>
             </Text>
 
-            <Text className="text-xs text-muted-foreground">
-              Nigeria's Automotive Community
+            <Text className="text-xs text-muted">
+              Learn Connect Fix
             </Text>
 
           </View>

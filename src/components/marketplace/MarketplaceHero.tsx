@@ -52,7 +52,7 @@ export function MarketplaceHero({
       {/* CTA */}
       <Pressable
         onPress={onCreateListing}
-        className="mt-6 flex-row items-center justify-center rounded-2xl bg-emerald-500 px-5 py-4 active:bg-emerald-600"
+        className="my-4 flex-row items-center self-start rounded-xl bg-primary px-6 py-4"
       >
         <Ionicons
           name="add-circle-outline"

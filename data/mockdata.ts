@@ -82,6 +82,8 @@ export const SEED_QUESTIONS: ForumQuestion[] = [
         acceptedAnswerId: 'a-1',
         createdAt: '2026-07-18T14:20:00Z',
         views: 142,
+        bookmarked: false,
+        isSolved: true,
     },
     {
         id: 'q-2',
@@ -101,6 +103,8 @@ export const SEED_QUESTIONS: ForumQuestion[] = [
         answersCount: 1,
         createdAt: '2026-07-19T09:15:00Z',
         views: 89,
+        bookmarked: false,
+        isSolved: false,
     },
     {
         id: 'q-3',
@@ -120,6 +124,8 @@ export const SEED_QUESTIONS: ForumQuestion[] = [
         answersCount: 1,
         createdAt: '2026-07-20T11:45:00Z',
         views: 210,
+        bookmarked: false,
+        isSolved: true,
     },
 ];
 

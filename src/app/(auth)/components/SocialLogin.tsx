@@ -40,7 +40,7 @@ export function SocialLogin({
   };
 
   return (
-    <View className="mt-2 gap-3">
+    <View className="flex-row gap-3">
 
       <Pressable
         disabled={loading}

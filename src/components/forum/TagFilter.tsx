@@ -13,9 +13,7 @@ export function TagFilter({
   active,
   onChange,
 }: TagFilterProps) {
-  if (!tags.length) {
-    return null;
-  }
+  if (!tags.length) return null;
 
   return (
     <ScrollView
@@ -24,21 +22,16 @@ export function TagFilter({
       contentContainerClassName="px-4 py-3"
     >
       {/* All Tags */}
+
       <Pressable
         onPress={() => onChange("")}
-        className={`mr-2 rounded-xl border px-4 py-2 ${
+        className={`mr-2 rounded-full border px-4 py-2 ${
           !active
-            ? "border-foreground bg-foreground"
-            : "border-border bg-card"
+            ? "border-primary bg-primary"
+            : "border-foreground bg-foreground"
         }`}
       >
-        <Text
-          className={`text-xs font-bold ${
-            !active
-              ? "text-background"
-              : "text-muted-foreground"
-          }`}
-        >
+        <Text className="text-xs font-semibold text-white">
           All Tags
         </Text>
       </Pressable>
@@ -49,23 +42,15 @@ export function TagFilter({
         return (
           <Pressable
             key={tag}
-            onPress={() =>
-              onChange(selected ? "" : tag)
-            }
-            className={`mr-2 rounded-md border px-4 py-2 ${
+            onPress={() => onChange(selected ? "" : tag)}
+            className={`mr-2  border px-4 py-2 ${
               selected
                 ? "border-primary bg-primary"
-                : "border-border bg-card"
+                : "border-foreground bg-foreground"
             }`}
           >
-            <Text
-              className={`text-xs font-semibold ${
-                selected
-                  ? "text-primary-foreground"
-                  : "text-muted-foreground"
-              }`}
-            >
-              #{tag}
+            <Text className="text-xs font-semibold text-white">
+              {tag}
             </Text>
           </Pressable>
         );

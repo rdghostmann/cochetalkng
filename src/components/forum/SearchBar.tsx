@@ -30,7 +30,7 @@ export function SearchBar({
       />
 
       <TextInput
-        className="ml-3 flex-1 text-base text-foreground"
+        className="ml-3 flex-1 text-base text-foreground focus:outline-none focus:border-none"
         placeholder={placeholder}
         placeholderTextColor="#9CA3AF"
         value={value}

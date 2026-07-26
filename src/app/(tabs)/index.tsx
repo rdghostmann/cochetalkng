@@ -10,7 +10,8 @@ import { TagFilter } from "@/components/forum/TagFilter";
 import { useForumStore, useMarketplaceStore } from "@/store";
 import { ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
+import { View } from "react-native";
+import { PostQuestionButton } from "@/components/forum/PostQuestionButton";
 export default function ForumScreen() {
   const {
     loading,
@@ -42,7 +43,8 @@ export default function ForumScreen() {
   return (
     <SafeAreaView
       edges={["top"]}
-      className="flex-1 bg-background"
+      className="flex-1 bg-dark"
+    // className="flex-1 bg-background"
     >
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -58,22 +60,27 @@ export default function ForumScreen() {
           onToggleSearch={toggleSearch}
         />
 
-        <ForumHero onPress={openAskModal} />
 
-        <SearchBar
-          value={searchQuery}
-          onChangeText={setSearchQuery}
-        />
 
+
+        <View className="bg-dark ">
+          <SearchBar
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+          />
+
+          <TagFilter
+            tags={tags}
+            active={activeTag}
+            onChange={setActiveTag}
+          />
+
+          <ForumHero onPress={openAskModal} />
+
+        </View>
         <FilterChips
           active={activeFilter}
           onChange={setActiveFilter}
-        />
-
-        <TagFilter
-          tags={tags}
-          active={activeTag}
-          onChange={setActiveTag}
         />
 
         <QuestionFeed
@@ -91,6 +98,9 @@ export default function ForumScreen() {
           onPress={openAskModal}
         />
       )}
+      <PostQuestionButton
+        onPress={openAskModal}
+      />
 
       <AskQuestionModal
         visible={showAskModal}

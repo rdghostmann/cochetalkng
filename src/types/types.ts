@@ -82,6 +82,8 @@ export interface ForumQuestion
     answersCount: number;
     acceptedAnswerId?: string;
     views: number;
+    bookmarked?: boolean;
+    isSolved?: boolean;
 }
 
 export interface ForumComment
