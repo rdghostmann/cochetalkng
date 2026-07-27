@@ -17,7 +17,7 @@ import {
 } from "@/features/auth/validation/auth.schema";
 
 import { useLogin } from "@/hooks/useLogin";
-import { AuthBackgroundBottom, AuthDivider, AuthFooter, AuthHeader, Button, Input, PasswordInput, RememberMe, SocialButtons } from "./components";
+import { AuthDivider, AuthFooter, AuthHeader, Button, Input, LoginAuthBackgroundBottom, PasswordInput, RememberMe, SocialButtons } from "./components";
 
 
 export default function LoginScreen() {
@@ -156,9 +156,9 @@ export default function LoginScreen() {
 
           {/* Bottom Decoration */}
 
-          <View className="mt-10 h-24 overflow-hidden">
-            <AuthBackgroundBottom />
-          </View>
+          {/* <View className="mt-10 h-24 overflow-hidden">
+            <LoginAuthBackgroundBottom />
+          </View> */}
 
         </View>
 
