@@ -1,3 +1,4 @@
+// AuthInput.tsx
 import {
   Text,
   TextInput,

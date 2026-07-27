@@ -1,30 +1,24 @@
-// PrimaryButton.tsx
-
 import {
   ActivityIndicator,
   Pressable,
   Text,
 } from "react-native";
 
-interface PrimaryButtonProps {
+interface ButtonProps {
   title: string;
-
   loading?: boolean;
-
   disabled?: boolean;
-
   className?: string;
-
   onPress(): void;
 }
 
-export function PrimaryButton({
+export function Button({
   title,
   loading = false,
   disabled = false,
   className = "",
   onPress,
-}: PrimaryButtonProps) {
+}: ButtonProps) {
   const isDisabled = loading || disabled;
 
   return (
@@ -33,18 +27,19 @@ export function PrimaryButton({
       onPress={onPress}
       className={`
         h-14
-        items-center
-        justify-center
         rounded-2xl
         bg-primary
+        items-center
+        justify-center
+        active:opacity-90
         ${isDisabled ? "opacity-60" : ""}
         ${className}
       `}
     >
       {loading ? (
-        <ActivityIndicator color="white" />
+        <ActivityIndicator color="#fff" />
       ) : (
-        <Text className="text-base font-bold text-primary-foreground">
+        <Text className="text-lg font-bold text-white">
           {title}
         </Text>
       )}

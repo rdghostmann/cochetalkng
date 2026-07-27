@@ -1,7 +1,15 @@
-export * from "./AuthHeader"
-export * from "./AuthInput";
+// (auth)/components/index.tsx
+export * from "./AuthHeader";
+export * from "./AuthBackgroundTop";
+export * from "./AuthBackgroundBottom";
+
+export * from "./Input";
 export * from "./PasswordInput";
-export * from "../../../components/ui/PrimaryButton";
+
+export * from "./Button";
+export * from "./Checkbox";
+export * from "./RememberMe";
+
 export * from "./AuthDivider";
 export * from "./SocialLogin";
 export * from "./AuthFooter";

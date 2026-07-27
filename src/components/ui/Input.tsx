@@ -1,28 +1,26 @@
-// PasswordInput.tsx
+// Input.tsx
 
-import { Feather } from "@expo/vector-icons";
-import { useState } from "react";
 import {
-  Pressable,
   Text,
   TextInput,
   TextInputProps,
   View,
 } from "react-native";
 
-interface PasswordInputProps
-  extends TextInputProps {
+import { Feather } from "@expo/vector-icons";
+
+interface InputProps extends TextInputProps {
   label: string;
   error?: string;
+  icon?: keyof typeof Feather.glyphMap;
 }
 
-export function PasswordInput({
+export function Input({
   label,
   error,
+  icon,
   ...props
-}: PasswordInputProps) {
-  const [visible, setVisible] = useState(false);
-
+}: InputProps) {
   return (
     <View className="mb-5">
       <Text className="mb-2 text-[15px] font-semibold text-foreground">
@@ -30,29 +28,19 @@ export function PasswordInput({
       </Text>
 
       <View className="h-14 flex-row items-center rounded-2xl border border-border bg-white px-4">
-        <Feather
-          name="lock"
-          size={20}
-          color="#10B981"
-        />
+        {icon && (
+          <Feather
+            name={icon}
+            size={20}
+            color="#10B981"
+          />
+        )}
 
         <TextInput
           {...props}
-          secureTextEntry={!visible}
           placeholderTextColor="#9CA3AF"
           className="ml-3 flex-1 text-base text-foreground"
         />
-
-        <Pressable
-          hitSlop={10}
-          onPress={() => setVisible(!visible)}
-        >
-          <Feather
-            name={visible ? "eye-off" : "eye"}
-            size={20}
-            color="#6B7280"
-          />
-        </Pressable>
       </View>
 
       {!!error && (

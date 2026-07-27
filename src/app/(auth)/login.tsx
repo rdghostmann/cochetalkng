@@ -1,106 +1,169 @@
 // src/app/(auth)/login.tsx
 
+import { useState } from "react";
 import { Link } from "expo-router";
-import { View } from "react-native";
+import {
+  SafeAreaView,
+  ScrollView,
+  Text,
+  View,
+} from "react-native";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import {
-    LoginFormData,
-    LoginSchema,
+  LoginFormData,
+  LoginSchema,
 } from "@/features/auth/validation/auth.schema";
 
 import { useLogin } from "@/hooks/useLogin";
-import {
-    AuthHeader, AuthInput,
-    PasswordInput,
-    PrimaryButton,
-    AuthFooter,
-    AuthDivider,
-    SocialLogin,
-} from "./components";
-
+import { AuthBackgroundBottom, AuthDivider, AuthFooter, AuthHeader, Button, Input, PasswordInput, RememberMe, SocialButtons } from "./components";
 
 
 export default function LoginScreen() {
-    const { login, loading } = useLogin();
+  const { login, loading } = useLogin();
 
-    const {
-        setValue,
-        handleSubmit,
-        formState: { errors },
-    } = useForm<LoginFormData>({
-        resolver: zodResolver(LoginSchema),
-        defaultValues: {
-            email: "",
-            password: "",
-        },
-    });
+  const [rememberMe, setRememberMe] = useState(false);
 
-    function onSubmit(data: LoginFormData) {
-        login(data);
-    }
+  const {
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm<LoginFormData>({
+    resolver: zodResolver(LoginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
 
+  function onSubmit(data: LoginFormData) {
+    login(data);
+  }
 
-    return (
-        <View className="flex-1 justify-center bg-background px-6">
+  return (
+    <SafeAreaView className="flex-1 bg-background">
 
-            <AuthHeader
-                title="Welcome Back 👋"
-                subtitle="Sign in to continue your automotive journey."
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled"
+        contentContainerClassName="pb-10"
+      >
+        {/* Hero */}
+
+        <AuthHeader />
+
+        {/* Authentication Card */}
+
+        <View
+          className="
+            -mt-10
+            rounded-t-[36px]
+            bg-white
+            px-6
+            pt-8
+            pb-10
+          "
+        >
+          {/* Heading */}
+
+          <Text className="text-3xl font-extrabold text-foreground">
+            Welcome Back
+          </Text>
+
+          <Text className="mt-2 text-base text-muted-foreground">
+            Login to continue
+          </Text>
+
+          {/* Email */}
+
+          <View className="mt-8">
+            <Input
+              label="Email Address"
+              icon="mail"
+              placeholder="Enter your email"
+              keyboardType="email-address"
+              autoCapitalize="none"
+              autoCorrect={false}
+              error={errors.email?.message}
+              onChangeText={(text) =>
+                setValue("email", text, {
+                  shouldValidate: true,
+                })
+              }
             />
+          </View>
 
-            <AuthInput
-                label="Email Address"
-                placeholder="Enter your email"
-                keyboardType="email-address"
-                autoCapitalize="none"
-                autoCorrect={false}
-                error={errors.email?.message}
-                onChangeText={(text) =>
-                    setValue("email", text, {
-                        shouldValidate: true,
-                    })
-                }
-            />
+          {/* Password */}
 
-            <PasswordInput
-                label="Password"
-                placeholder="Enter your password"
-                error={errors.password?.message}
-                onChangeText={(text) =>
-                    setValue("password", text, {
-                        shouldValidate: true,
-                    })
-                }
+          <PasswordInput
+            label="Password"
+            placeholder="Enter your password"
+            error={errors.password?.message}
+            onChangeText={(text) =>
+              setValue("password", text, {
+                shouldValidate: true,
+              })
+            }
+          />
+
+          {/* Remember */}
+
+          <View className="mt-2 flex-row items-center justify-between">
+
+            <RememberMe
+              checked={rememberMe}
+              onChange={() =>
+                setRememberMe(!rememberMe)
+              }
             />
 
             <Link
-                href="/(auth)/forgot-password"
-                className="mt-3 self-end text-primary font-medium"
+              href="/(auth)/forgot-password"
+              className="text-sm font-semibold text-primary"
             >
-                Forgot Password?
+              Forgot Password?
             </Link>
 
-            <PrimaryButton
-                title="Sign In"
-                loading={loading}
-                onPress={handleSubmit(onSubmit)}
-                className="mt-8"
-            />
+          </View>
 
-            <AuthDivider text="or continue with" />
+          {/* Login */}
 
-            <SocialLogin
-                loading={loading}
-            />
-            
-            <AuthFooter
-                text="Don't have an account?"
-                linkText="Register"
-                href="/(auth)/register"
-            />
+          <Button
+            title="Login"
+            loading={loading}
+            className="mt-8"
+            onPress={handleSubmit(onSubmit)}
+          />
+
+          {/* Divider */}
+
+          <AuthDivider text="Or continue with" />
+
+          {/* Social */}
+
+          <SocialButtons
+            loading={loading}
+          />
+
+          {/* Footer */}
+
+          <AuthFooter
+            text="Don't have an account?"
+            linkText="Register"
+            href="/(auth)/register"
+          />
+
+          {/* Bottom Decoration */}
+
+          <View className="mt-10 h-24 overflow-hidden">
+            <AuthBackgroundBottom />
+          </View>
 
         </View>
-    );
+
+      </ScrollView>
+
+    </SafeAreaView>
+  );
 }

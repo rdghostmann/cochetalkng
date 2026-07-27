@@ -8,18 +8,15 @@ import { AuthProvider } from "@/providers/AuthProvider";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 import { NotificationProvider } from "@/providers/NotificationProvider";
 import { AuthNavigator } from "@/providers/AuthNavigator";
-import { AuthGuard } from "./(auth)/components/AuthGuard";
 
 export default function RootLayout() {
   return (
     <QueryProvider>
       <AuthProvider>
-        <AuthNavigator />
         <ThemeProvider>
           <NotificationProvider>
-            <AuthGuard>
-              <Stack screenOptions={{ headerShown: false }} />
-            </AuthGuard>
+            <AuthNavigator />
+            <Stack screenOptions={{ headerShown: false }} />
           </NotificationProvider>
         </ThemeProvider>
       </AuthProvider>

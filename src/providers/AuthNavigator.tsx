@@ -1,4 +1,5 @@
-// .src/providers/AuthNavigator.tsx
+// providers/AuthNavigator.tsx
+
 import { useEffect } from "react";
 import {
   router,
@@ -7,18 +8,20 @@ import {
 } from "expo-router";
 
 import { useAuthStore } from "@/store/auth.store";
+import { SplashLoader } from "@/components/common/SplashLoader";
+
 
 export function AuthNavigator() {
   const {
     initialized,
     loading,
     session,
-    user,
   } = useAuthStore();
 
   const segments = useSegments();
 
-  const navigationState = useRootNavigationState();
+  const navigationState =
+    useRootNavigationState();
 
   useEffect(() => {
     if (!navigationState?.key) return;
@@ -27,38 +30,34 @@ export function AuthNavigator() {
 
     const root = segments[0];
 
-    const isAuth = root === "(auth)";
-    const isTabs = root === "(tabs)";
-    // Guest
+    const inAuth =
+      root === "(auth)";
+
+    const inTabs =
+      root === "(tabs)";
+
     if (!session) {
-      if (!isAuth) {
+      if (!inAuth) {
         router.replace("/(auth)/login");
       }
 
       return;
     }
 
-    // Logged in but email not verified
-    // if (!user?.email_confirmed_at) {
-    //   if (segments[1] !== "verify-email") {
-    //     router.replace("/(auth)/verify-email");
-    //   }
-
-    //   return;
-    // }
-
-    // Logged in
-    if (!isTabs) {
+    if (!inTabs) {
       router.replace("/(tabs)");
     }
   }, [
     initialized,
     loading,
     session,
-    user,
     navigationState?.key,
     segments,
   ]);
+
+  if (!initialized || loading) {
+    return <SplashLoader />;
+  }
 
   return null;
 }

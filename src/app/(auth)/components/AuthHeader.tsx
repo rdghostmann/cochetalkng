@@ -1,32 +1,62 @@
 // AuthHeader.tsx
 import { Image, Text, View } from "react-native";
 
+import { AuthBackgroundTop } from "./AuthBackgroundTop";
+
 interface AuthHeaderProps {
-  title: string;
-  subtitle: string;
+  title?: string;
+  subtitle?: string;
 }
 
 export function AuthHeader({
-  title,
-  subtitle,
+  title = "CocheTalkNG",
+  subtitle = "Nigeria's Automotive Community",
 }: AuthHeaderProps) {
   return (
-    <View className="items-center mb-10">
+    <View
+      className="
+        relative
+        h-[285px]
+        items-center
+        justify-center
+        overflow-hidden
+      "
+    >
+      {/* Background Illustration */}
+      <AuthBackgroundTop />
 
+      {/* Logo */}
       <Image
-        source={require("../../../../assets/images/icon.png")}
-        className="h-24 w-24 rounded-3xl"
+        source={require("@/assets/images/logo.png")}
         resizeMode="contain"
+        className="h-24 w-24"
       />
 
-      <Text className="mt-6 text-3xl font-bold text-center text-foreground">
-        {title}
+      {/* Brand */}
+      <Text
+        className="
+          mt-3
+          text-[28px]
+          font-extrabold
+          tracking-tight
+          text-foreground
+        "
+      >
+        CocheTalk
+        <Text className="text-primary">NG</Text>
       </Text>
 
-      <Text className="mt-2 text-center text-base text-muted-foreground px-6">
+      {/* Subtitle */}
+      <Text
+        className="
+          mt-1
+          text-[15px]
+          font-medium
+          text-muted-foreground
+        "
+      >
         {subtitle}
       </Text>
-
     </View>
   );
 }
