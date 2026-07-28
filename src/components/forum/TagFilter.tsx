@@ -43,7 +43,7 @@ export function TagFilter({
           <Pressable
             key={tag}
             onPress={() => onChange(selected ? "" : tag)}
-            className={`mr-2  border px-4 py-2 ${
+            className={`mr-2 rounded-full border px-4 py-2 ${
               selected
                 ? "border-primary bg-primary"
                 : "border-foreground bg-foreground"

@@ -72,14 +72,14 @@ function QuestionCardComponent({
     .join(" ");
 
   return (
-    <Pressable
-      onPress={
-        onPress ??
-        (() =>
-          router.push(
-            `/question/${question.id}` as Href
-          ))
-      }
+    <View
+      // onPress={
+      //   onPress ??
+      //   (() =>
+      //     router.push(
+      //       `/question/${question.id}` as Href
+      //     ))
+      // }
       className="mx-4 my-2 rounded-3xl border border-border bg-card px-5 py-5"
     >
       {/* ================= Header ================= */}
@@ -97,10 +97,10 @@ function QuestionCardComponent({
               source={{
                 uri: question.authorAvatar,
               }}
-              className="h-14 w-14 rounded-full"
+              className="h-12 w-12 rounded-full"
             />
           ) : (
-            <View className="h-14 w-14 items-center justify-center rounded-full bg-primary/15">
+            <View className="h-12 w-12 items-center justify-center rounded-full bg-primary/15">
               <Text className="text-xl font-bold text-primary">
                 {question.authorName
                   .charAt(0)
@@ -115,7 +115,7 @@ function QuestionCardComponent({
 
             <View className="flex-row items-center">
 
-              <Text className="text-xl font-bold text-foreground">
+              <Text className="text-lg font-semibold text-foreground">
                 {question.authorName}
               </Text>
 
@@ -128,7 +128,7 @@ function QuestionCardComponent({
                     color="#00C787"
                   />
 
-                  <Text className="ml-1 text-xs font-bold text-primary">
+                  <Text className="hidden ml-1 text-xs font-bold text-primary">
                     Verified
                   </Text>
 
@@ -139,7 +139,7 @@ function QuestionCardComponent({
 
             {/* Vehicle */}
 
-            <Text className="mt-2 text-base text-muted-foreground">
+            <Text className="text-base text-muted-foreground">
 
               {vehicle}
 
@@ -152,7 +152,7 @@ function QuestionCardComponent({
 
         </Pressable>
 
-        <Text className="text-sm text-muted-foreground">
+        <Text className="text-xs text-muted-foreground">
           {timeAgo(question.createdAt)}
         </Text>
 
@@ -162,7 +162,7 @@ function QuestionCardComponent({
 
       <Text
         numberOfLines={3}
-        className="mt-6 text-3xl font-bold leading-10 text-foreground"
+        className="mt-2 text-lg font-semibold text-foreground"
       >
         {question.title}
       </Text>
@@ -170,11 +170,11 @@ function QuestionCardComponent({
       {/* ================= Tag ================= */}
 
       {question.tags.length > 0 && (
-        <View className="mt-6 flex-row flex-wrap">
+        <View className="mt-2 flex-row flex-wrap">
 
           <View className="rounded-full bg-primary/10 px-4 py-2">
 
-            <Text className="text-base font-semibold text-primary">
+            <Text className="text-sm font-semibold text-primary">
               {question.tags[0]}
             </Text>
 
@@ -239,7 +239,7 @@ function QuestionCardComponent({
 
       </View>
 
-    </Pressable>
+    </View>
   );
 }
 

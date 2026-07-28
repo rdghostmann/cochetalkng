@@ -24,7 +24,7 @@ export function QuestionFeed({
     <>
       <View className="mt-6 mb-2 flex-row items-center justify-between px-4">
 
-        <Text className="text-xl font-bold">
+        <Text className="text-xl font-bold text-background">
           Top Questions
         </Text>
 

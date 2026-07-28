@@ -78,10 +78,10 @@ export default function ForumScreen() {
           <ForumHero onPress={openAskModal} />
 
         </View>
-        <FilterChips
+        {/* <FilterChips
           active={activeFilter}
           onChange={setActiveFilter}
-        />
+        /> */}
 
         <QuestionFeed
           questions={filteredQuestions}

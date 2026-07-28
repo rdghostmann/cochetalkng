@@ -68,7 +68,7 @@ export function ForumHero({
                 <TouchableOpacity
                     activeOpacity={0.9}
                     onPress={onPress}
-                    className="mt-7 self-start rounded-2xl bg-primary px-6 py-4"
+                    className="hidden mt-7 self-start rounded-2xl bg-primary px-6 py-4"
                 >
 
                     <View className="flex-row items-center">

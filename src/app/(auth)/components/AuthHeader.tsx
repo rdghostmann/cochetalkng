@@ -16,11 +16,12 @@ export function AuthHeader({
     <View
       className="
         relative
-        h-[285px]
+        h-1/6
         items-center
         justify-center
         overflow-hidden
         border
+z-20
       "
     >
       {/* Background Illustration */}
@@ -28,16 +29,15 @@ export function AuthHeader({
 
       {/* Logo */}
       <View className="mt-10 h-24 w-24 overflow-hidden ">
-
         <Image
           source={require("../../../../assets/images/icon.png")}
-          resizeMode="contain"
+          resizeMode="cover"
           className="w-full "
         />
       </View>
 
       {/* Brand */}
-      <Text
+      {/* <Text
         className="
           mt-3
           text-[28px]
@@ -48,10 +48,10 @@ export function AuthHeader({
       >
         CocheTalk
         <Text className="text-primary">NG</Text>
-      </Text>
+      </Text> */}
 
       {/* Subtitle */}
-      <Text
+      {/* <Text
         className="
           mt-1
           text-[15px]
@@ -60,7 +60,7 @@ export function AuthHeader({
         "
       >
         {subtitle}
-      </Text>
+      </Text> */}
     </View>
   );
 }

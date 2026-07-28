@@ -416,13 +416,13 @@ export function AskQuestionModal({
                             !description.trim()
                         }
                         onPress={handleSubmit}
-                        className={`mt-8 rounded-xl py-4 ${title.trim() &&
+                        className={`mt-8 rounded-xl bg-gray-200 py-4 ${title.trim() &&
                                 description.trim()
                                 ? "bg-primary"
                                 : "bg-muted"
                             }`}
                     >
-                        <Text className="text-center text-base font-bold text-primary-foreground">
+                        <Text className="text-center text-base font-bold text-primary">
                             Post Question
                         </Text>
                     </TouchableOpacity>

@@ -40,48 +40,29 @@ export function ForumHeader({
 
   return (
     <View className="border-b border-border bg-dark">
-    {/* <View className="border-b border-border bg-background"> */}
+      {/* <View className="border-b border-border bg-background"> */}
 
       <View className="flex-row items-center justify-between px-4 py-3">
 
         {/* Logo */}
 
-        <Pressable
-          className="flex-row items-center"
-          onPress={() =>
-            router.replace("/(tabs)")
-          }
-        >
-          {logoUri ? (
-            <Image
-              source={{
-                uri: logoUri,
-              }}
-              className="h-10 w-10 rounded-xl"
-              resizeMode="cover"
-            />
-          ) : (
-            <View className="h-10 w-10 items-center justify-center rounded-xl bg-primary">
+        <View className="flex-row items-center h-28 w-28 p-4 border">
+          <Image
+            source={require("../../../assets/images/light-icon.png")}
+            resizeMode="contain"
+            className="flex-1 w-full"
+          />
 
-              <Text className="text-lg font-extrabold text-white">
-                C
-              </Text>
-
-            </View>
-          )}
-
-          <View className="ml-3">
-
+          <View className="hidden ml-3">
             <Text className="text-lg font-extrabold text-background">
               CocheTalk<Text className="text-primary">NG</Text>
             </Text>
 
             <Text className="text-xs text-muted">
-              Learn Connect Fix
+              Learn • Connect • Fix
             </Text>
-
           </View>
-        </Pressable>
+        </View>
 
         {/* Actions */}
 
@@ -115,7 +96,7 @@ export function ForumHeader({
             />
           </Pressable>
 
-          <View className="border">
+          <View className="border h-10 w-10">
 
             {currentUser && (
               <Pressable
@@ -137,7 +118,7 @@ export function ForumHeader({
                 ) : (
                   <View className="h-11 w-11 items-center justify-center rounded-full bg-primary">
 
-                    <Text className="text-base font-bold text-black">
+                    <Text className="text-base font-bold text-white">
                       {initial}
                     </Text>
 

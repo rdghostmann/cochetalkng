@@ -51,13 +51,13 @@ export default function LoginScreen() {
       >
         {/* Hero */}
 
-        <AuthHeader />
+        {/* <AuthHeader /> */}
 
         {/* Authentication Card */}
 
         <View
           className="
-            -mt-10
+           
             rounded-t-[36px]
             bg-white
             px-6
