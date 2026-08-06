@@ -21,8 +21,7 @@ export function SearchBar({
   autoFocus = true,
 }: SearchBarProps) {
   return (
-    <View className="mx-4 mt-3 flex-row items-center rounded-xl border border-border bg-muted px-4 py-3">
-
+    <View className="h-14 flex-row items-center rounded-2xl border border-border bg-background px-4">
       <Feather
         name="search"
         size={18}

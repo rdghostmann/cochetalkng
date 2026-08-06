@@ -1,66 +1,50 @@
-// AuthHeader.tsx
-import { Image, Text, View } from "react-native";
+// components/auth/AuthHeader.tsx
 
-import { LoginAuthBackgroundTop } from "./LoginAuthBackgroundTop";
+import {
+  Image,
+  ImageBackground,
+  Text,
+  View,
+} from "react-native";
 
-interface AuthHeaderProps {
-  title?: string;
-  subtitle?: string;
-}
-
-export function AuthHeader({
-  title = "",
-  subtitle = "Learn • Connect • Fix",
-}: AuthHeaderProps) {
+export function AuthHeader() {
   return (
-    <View
-      className="
-        relative
-        h-1/6
-        items-center
-        justify-center
-        overflow-hidden
-        border
-z-20
-      "
-    >
-      {/* Background Illustration */}
-      {/* <LoginAuthBackgroundTop /> */}
+    <View className="relative h-56 w-full overflow-hidden">
 
-      {/* Logo */}
-      <View className="mt-10 h-24 w-24 overflow-hidden ">
+      {/* Background Illustration */}
+
+      <ImageBackground
+        source={require("../../../../assets/images/login-top-background.png")}
+        resizeMode="contain"
+        className="w-full h-full object-cover object-center object-fit"
+        // className="absolute inset-0 flex-1 object-cover object-center object-fit"
+      >
+        {/* Dark Overlay */}
+
+        <View className="absolute inset-0 bg-black/40" />
+
+      </ImageBackground>
+
+      {/* Decorative Circles */}
+
+      <View className="absolute -right-16 -top-16 h-44 w-44 rounded-full bg-primary/15" />
+
+      <View className="absolute -left-20 bottom-0 h-36 w-36 rounded-full bg-white/10" />
+
+      {/* Logo & Branding */}
+
+      <View className="flex-1 items-center justify-center px-8">
+
         <Image
           source={require("../../../../assets/images/icon.png")}
-          resizeMode="cover"
-          className="w-full "
+          resizeMode="contain"
+          className="h-24 w-24"
         />
+
+      
+
       </View>
 
-      {/* Brand */}
-      {/* <Text
-        className="
-          mt-3
-          text-[28px]
-          font-extrabold
-          tracking-tight
-          text-foreground
-        "
-      >
-        CocheTalk
-        <Text className="text-primary">NG</Text>
-      </Text> */}
-
-      {/* Subtitle */}
-      {/* <Text
-        className="
-          mt-1
-          text-[15px]
-          font-medium
-          text-muted-foreground
-        "
-      >
-        {subtitle}
-      </Text> */}
     </View>
   );
 }

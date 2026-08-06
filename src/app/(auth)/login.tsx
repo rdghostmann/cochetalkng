@@ -51,7 +51,7 @@ export default function LoginScreen() {
       >
         {/* Hero */}
 
-        {/* <AuthHeader /> */}
+        <AuthHeader />
 
         {/* Authentication Card */}
 

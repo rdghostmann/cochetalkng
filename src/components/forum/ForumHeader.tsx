@@ -46,7 +46,7 @@ export function ForumHeader({
 
         {/* Logo */}
 
-        <View className="flex-row items-center h-28 w-28 p-4 border">
+        <View className="flex-row items-center h-10 w-20 p-4 border">
           <Image
             source={require("../../../assets/images/light-icon.png")}
             resizeMode="contain"

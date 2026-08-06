@@ -16,10 +16,10 @@ export function TagFilter({
   if (!tags.length) return null;
 
   return (
-    <ScrollView
+   <ScrollView
       horizontal
       showsHorizontalScrollIndicator={false}
-      contentContainerClassName="px-4 py-3"
+      contentContainerClassName="px-4 py-4"
     >
       {/* All Tags */}
 
